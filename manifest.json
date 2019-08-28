@@ -4,27 +4,29 @@
   "description": "浏览器助手",
   "version": "1.0.0",
   "permissions": [
-        "browsingData",
-        "activeTab",
-        "tabs", 
-        "cookies",
-        "contextMenus",
-        "http://*/*",
-        "https://*/*"
-   ],
-    "browser_action": {
-        "default_icon": "img/icon.png",
-        "default_popup": "html/popup.html",
-        "default_title": "Chrome助手"
-    },
-    "background": {
-        "page": "html/background.html"
-    }, 
-  "icons": 
-  { 
-	"16": "img/icon.png",             
-	"48": "img/icon.png",            
-	"128": "img/icon.png" 
+      "browsingData",
+      "activeTab",
+      "tabs", 
+      "cookies",
+      "contextMenus",
+      "http://*/*",
+      "https://*/*"
+  ],
+  "browser_action": {
+    "default_icon": "img/icon.png",
+    "default_popup": "html/popup.html",
+    "default_title": "Chrome助手"
+  },
+  "background": {
+    "page": "html/background.html"
+  },
+  "chrome_url_overrides":{
+      "newtab": "html/newtab.html"
+  }, 
+  "icons": { 
+    "16": "img/icon.png",             
+    "48": "img/icon.png",            
+    "128": "img/icon.png" 
   }, 
   "web_accessible_resources" : [
     "js/inject.js"
