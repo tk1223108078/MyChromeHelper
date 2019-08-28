@@ -1,0 +1,55 @@
+body{
+    width: 200px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.switchitem{
+    height: 30px;
+    width: 200px;
+    background-color: #FFFFFF;
+    border-bottom-style: dashed;
+    border-bottom-color: #999;
+    border-bottom-width: 1px;
+}
+
+.switchitem:hover{
+    background-color:#F0F0F0;
+}
+
+.switchitemimgsel{
+    float: left;
+    height: 16px;
+    width: 16px;
+    position: relative;
+    left: 10px;
+    top: 7px;
+    background-image: url(../img/select.png);
+    background-repeat: no-repeat;
+}
+
+.switchitemimgnosel{
+    float: left;
+    height: 16px;
+    width: 16px;
+    position: relative;
+    left: 10px;
+    top: 7px;
+    background-image: url(../img/noselect.png);
+    background-repeat: no-repeat;
+}
+
+.switchiteminfo{
+    float: left;
+    height: 16px;
+    position: relative;
+    left: 26px;
+    top: 5px;
+}
+
+.myinputinput{
+    float: left;
+    position: relative;
+    left: 7px;
+    top: 5px;
+}
