@@ -4,6 +4,7 @@
   "description": "浏览器助手",
   "version": "1.0.0",
   "permissions": [
+      "webRequest",
       "browsingData",
       "activeTab",
       "tabs", 
