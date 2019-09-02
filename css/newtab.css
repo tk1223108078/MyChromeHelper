@@ -1,0 +1,67 @@
+html {
+    --md-tile-margin: 16px;
+    --md-tile-size: 112px;
+    --column-count: 1;
+    --shortcut-column-count: 5;
+    --content-width: calc( (var(--column-count) * (var(--tile-width) + var(--tile-margin))) /* We add an extra pixel because rounding errors on different zooms can * make the width shorter than it should be. */ + 1px);
+    --shortcuts-width: calc(var(--shortcut-column-count) * var(--md-tile-size));
+    --logo-height: 200px;
+    --logo-margin-top: 56px;
+    --logo-margin-bottom: 29px;
+    --logo-iframe-initial-height: var(--logo-height);
+    --logo-iframe-height: var(--logo-height);
+    --logo-iframe-resize-duration: 150ms;
+    --logo-iframe-width: 500px;
+    --tile-height: 128px;
+    --tile-margin: 16px;
+    --tile-width: 154px;
+    --mv-notice-time: 10s;
+    --text-color: #000;
+    --text-color-light: #fff;
+    --text-color-link: rgb(17, 85, 204);
+    height: 100%;
+}
+
+/* body样式 */
+body{
+    /* 加载背景图 */
+    background: url("../img/test.jpg");
+    /* 背景图垂直、水平均居中 */
+    background-position: center center;
+    /* 背景图不平铺 */
+    background-repeat: no-repeat;
+    /* 当内容高度大于图片高度时，背景图像的位置相对于viewport固定 */
+    background-attachment: fixed;
+    /* 让背景图基于容器大小伸缩 */
+    background-size:cover;
+}
+
+/* logo部分 */
+#logo{
+    background: rgb(205, 0, 0);
+    height: calc(var(--logo-height) + var(--logo-margin-bottom));
+    margin-top: var(--logo-margin-top);
+    min-height: fit-content;
+    position: relative;
+}
+
+/* 搜索部分 */
+#search{
+    min-width: 410px;
+    background: #777;
+    margin: 0 auto 0 auto;
+    width: var(--content-width);
+}
+
+#search-box{
+    background-color: #000000;
+    border-radius: 22px;
+    cursor: text;
+    font-size: 18px;
+    height: 44px;
+    line-height: 36px;
+    margin: 0 auto;
+    max-width: 560px;
+    opacity: 1;
+    position: relative;
+}
