@@ -1,8 +1,6 @@
 html {
     --md-tile-margin: 16px;
     --md-tile-size: 112px;
-    --column-count: 1;
-    --shortcut-column-count: 5;
     --content-width: calc( (var(--column-count) * (var(--tile-width) + var(--tile-margin))) /* We add an extra pixel because rounding errors on different zooms can * make the width shorter than it should be. */ + 1px);
     --shortcuts-width: calc(var(--shortcut-column-count) * var(--md-tile-size));
     --logo-height: 200px;
@@ -64,4 +62,18 @@ body{
     max-width: 560px;
     opacity: 1;
     position: relative;
+}
+
+#common-page{
+    background-color: #000000;
+    z-index: -1;
+    margin-top: 22px;
+    text-align: -webkit-center;
+    user-select: none;
+    height: calc(2*(var(--md-tile-size) + var(--md-tile-margin)) + 10px);
+    position: relative;
+}
+
+#common-page-item{
+    width: calc(var(--shortcuts-width) + 12px);
 }
