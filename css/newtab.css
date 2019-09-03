@@ -1,6 +1,8 @@
 html {
     --md-tile-margin: 16px;
     --md-tile-size: 112px;
+    --column-count: 4;
+    --shortcut-column-count: 5;
     --content-width: calc( (var(--column-count) * (var(--tile-width) + var(--tile-margin))) /* We add an extra pixel because rounding errors on different zooms can * make the width shorter than it should be. */ + 1px);
     --shortcuts-width: calc(var(--shortcut-column-count) * var(--md-tile-size));
     --logo-height: 200px;
@@ -116,15 +118,35 @@ body{
 }
 
 #common-page{
-    background-color: #000000;
     z-index: -1;
     margin-top: 22px;
     text-align: -webkit-center;
     user-select: none;
     height: calc(2*(var(--md-tile-size) + var(--md-tile-margin)) + 10px);
     position: relative;
+    padding: 10px 6px 0;
+    position: static;
+    text-align: -webkit-auto;
+    user-select: none;
 }
 
-#common-page-item{
-    width: calc(var(--shortcuts-width) + 12px);
+#common-pages{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    padding: 10px 6px 0;
+    position: static;
+    width: calc(6*(var(--md-tile-size) + var(--md-tile-margin)));
+    height: calc(2*(var(--md-tile-size) + var(--md-tile-margin)) + 10px);
+    margin: 0 auto;
+    text-align: -webkit-auto;
+}
+
+.common-page-item{
+    background: #aaa;
+    height: var(--md-tile-size);
+    width: var(--md-tile-size);
+    margin-top: var(--md-tile-margin);
+    margin-left: calc(var(--md-tile-margin)/2);
+    margin-right: calc(var(--md-tile-margin)/2);
 }
