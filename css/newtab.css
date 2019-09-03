@@ -17,6 +17,8 @@ html {
     --text-color: #000;
     --text-color-light: #fff;
     --text-color-link: rgb(17, 85, 204);
+    --radius-size: 22px;
+    --icon-size: 24px;
     height: 100%;
 }
 
@@ -36,24 +38,34 @@ body{
 
 /* logo部分 */
 #logo{
-    background: rgb(205, 0, 0);
+    /*background: rgb(205, 0, 0);*/
     height: calc(var(--logo-height) + var(--logo-margin-bottom));
     margin-top: var(--logo-margin-top);
     min-height: fit-content;
     position: relative;
 }
 
+#logo-image{
+    background: url("../img/logo.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    bottom: var(--logo-margin-bottom);
+    height: 92px;
+    left: calc(50% - 275px/2);
+    position: absolute;
+    width: 275px;
+}
+
 /* 搜索部分 */
 #search{
     min-width: 410px;
-    background: #777;
     margin: 0 auto 0 auto;
     width: var(--content-width);
 }
 
 #search-box{
-    background-color: #000000;
-    border-radius: 22px;
+    background: #fff;
+    border-radius: var(--radius-size);
     cursor: text;
     font-size: 18px;
     height: 44px;
@@ -62,6 +74,45 @@ body{
     max-width: 560px;
     opacity: 1;
     position: relative;
+}
+
+#search-box-icon{
+    -webkit-mask-image: url("../img/search.png");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100%;
+    background: var(--icon-size) var(--icon-size) rgb(117, 117, 117);
+    bottom: 0;
+    height: var(--icon-size);
+    left: 0;
+    margin: auto 0;
+    margin-inline-start: 16px;
+    position: absolute;
+    top: 0;
+    width: var(--icon-size);
+}
+
+#search-box-input{
+    top: 0;
+    bottom: 0;
+    left: calc(var(--icon-size) + var(--radius-size));
+    right: calc(var(--icon-size) + var(--radius-size));
+    font-size: 16px;
+    height: 21px;
+    width: calc(100% - calc(var(--icon-size) + var(--radius-size))*2);
+    border-style: none;
+    outline:none;
+    margin: auto 0;
+    line-height: 21px;
+    overflow: hidden;
+    position: absolute;
+    text-align: initial;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#search-box-switch{
+    background: #fff;
 }
 
 #common-page{
