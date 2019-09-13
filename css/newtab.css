@@ -1,6 +1,11 @@
 html {
     --md-tile-margin: 16px;
     --md-tile-size: 112px;
+    --md-tile-width: 112px;
+    --md-tile-padding-bottom: 10px;
+    --md-tile-padding-horizontal: 4px;
+    --md-tile-padding-top: 16px;
+    --md-menu-size: 12px;
     --column-count: 4;
     --shortcut-column-count: 5;
     --content-width: calc( (var(--column-count) * (var(--tile-width) + var(--tile-margin))) /* We add an extra pixel because rounding errors on different zooms can * make the width shorter than it should be. */ + 1px);
@@ -143,10 +148,29 @@ body{
 }
 
 .common-page-item{
-    background: #aaa;
+    cursor: hand;
+    position: relative;
     height: var(--md-tile-size);
     width: var(--md-tile-size);
     margin-top: var(--md-tile-margin);
     margin-left: calc(var(--md-tile-margin)/2);
     margin-right: calc(var(--md-tile-margin)/2);
+}
+
+.common-page-item-navigation{
+    cursor: hand;
+    height: calc(var(--md-tile-size)-16px);
+    width: calc(var(--md-tile-size)-16px);
+}
+
+.common-page-item-modify{
+    background: url("../img/modify.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 16px;
+    width: 16px;
 }
