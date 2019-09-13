@@ -7,7 +7,7 @@ html {
     --md-tile-padding-top: 16px;
     --md-menu-size: 12px;
     --column-count: 4;
-    --shortcut-column-count: 5;
+    --shortcut-column-count: 6;
     --content-width: calc( (var(--column-count) * (var(--tile-width) + var(--tile-margin))) /* We add an extra pixel because rounding errors on different zooms can * make the width shorter than it should be. */ + 1px);
     --shortcuts-width: calc(var(--shortcut-column-count) * var(--md-tile-size));
     --logo-height: 200px;
@@ -148,19 +148,11 @@ body{
 }
 
 .common-page-item{
-    cursor: hand;
+    cursor: pointer;
     position: relative;
     height: var(--md-tile-size);
     width: var(--md-tile-size);
-    margin-top: var(--md-tile-margin);
-    margin-left: calc(var(--md-tile-margin)/2);
-    margin-right: calc(var(--md-tile-margin)/2);
-}
-
-.common-page-item-navigation{
-    cursor: hand;
-    height: calc(var(--md-tile-size)-16px);
-    width: calc(var(--md-tile-size)-16px);
+    margin: var(--md-tile-margin);
 }
 
 .common-page-item-modify{
@@ -169,8 +161,48 @@ body{
     background-repeat: no-repeat;
     background-size:cover;
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 5px;
+    right: 5px;
     height: 16px;
     width: 16px;
+    cursor: pointer;
+}
+
+.common-page-item-icon{
+    border-radius: 4px;
+    top: 26px;
+    left: 26px;
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.common-page-item-icon img{
+    border-radius: 40px;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: pointer;
+}
+
+.common-page-item-label{
+    top: 96px;
+    left: 0px;
+    height: 16px;
+    width: 112px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.common-page-item-label span{
+    border-radius: 8px;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-align: center;
+    line-height:16px;
+    cursor: pointer;
 }
