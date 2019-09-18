@@ -155,6 +155,15 @@ body{
     margin: var(--md-tile-margin);
 }
 
+.common-page-item-select{
+    cursor: pointer;
+    position: relative;
+    height: var(--md-tile-size);
+    width: var(--md-tile-size);
+    margin: var(--md-tile-margin);
+    border: 0.5px solid white;
+}
+
 .common-page-item-modify{
     background: url("../img/modify.png");
     background-position: center center;
@@ -166,6 +175,7 @@ body{
     height: 16px;
     width: 16px;
     cursor: pointer;
+    display: none;
 }
 
 .common-page-item-icon{
