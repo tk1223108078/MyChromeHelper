@@ -73,8 +73,20 @@ function AddShortCutItem(index){
     document.getElementById("common-pages").appendChild(divCommonPageItem);
 }
 
+// 或者bing的每日图片作为body的背景图片
+function setBodyBackgroundImage(){
+    // document.body.style.backgroundImage="url(xxx.jpg)";
+    const url = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+    fetch(url).then(function(response){
+        
+    }).catch(e => console.log("Oops, error", e))
+}
+
 // 界面加载事件
 window.onload = function(){
+    // 设置背景图片
+    setBodyBackgroundImage();
+
     // 添加Item事件
     for(var index = 0x0; index < 10; index++){
         AddShortCutItem(index);
