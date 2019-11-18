@@ -73,13 +73,45 @@ function AddShortCutItem(index){
     document.getElementById("common-pages").appendChild(divCommonPageItem);
 }
 
+var getResponse = async function(url) {
+    let ok = 0;
+    let data = "";
+    try{
+        let response = await fetch(url);
+        if(response.ok && response.status == 200){
+            // 标记通讯成功，并且设置返回值
+            ok = 1;
+            data = await response.json();
+        }else{
+            data = "网络请求失败，ok="+response.ok+", status="+response.status;
+        }
+    }catch(error){
+        data = "发生异常, error="+error;
+    }
+    // 返回值
+    return {"ok":ok, "data":data};
+}
+
 // 或者bing的每日图片作为body的背景图片
-function setBodyBackgroundImage(){
-    // document.body.style.backgroundImage="url(xxx.jpg)";
-    const url = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
-    fetch(url).then(function(response){
-        
-    }).catch(e => console.log("Oops, error", e))
+async function setBodyBackgroundImage(){
+    // // document.body.style.backgroundImage="url(xxx.jpg)";
+    // const url = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+    // fetch(url).then(function(response){
+    //     // 通讯成功
+    //     if(response.ok && response.status == 200){
+
+    //     }
+    //     console.log(response);
+    // }).catch(e => console.log("Oops, error", e))
+    var getBingImageUrl = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+    var response = await getResponse(getBingImageUrl);
+    if(response.ok){
+        console.log(response.data);
+        if(response.data.images.length){
+            let imageData = response.data.images[0].url;
+            console.log(imageData);
+        }
+    }
 }
 
 // 界面加载事件
