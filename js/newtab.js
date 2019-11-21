@@ -30,8 +30,12 @@ function ShortCutModifyClick(index){
     event.stopPropagation();
 }
 
+
+
 // 添加快捷方式Item
-function AddShortCutItem(index){
+function AddShortCutItem(index, itemJson){
+    var itemName = itemJson.name;
+    var url = itemJson.url;
     // Item
     var divCommonPageItem = document.createElement("div");
     divCommonPageItem.setAttribute("class", "common-page-item");
@@ -42,17 +46,19 @@ function AddShortCutItem(index){
     divCommonPageItem.setAttribute("onmouseleave", "ShortCutItemMouseLeave("+index+")");
 
     // icon
+    var domainReg = /(.+?:\/\/.+?)\//i;
+    var iconUrl = url.match(domainReg)[1] + '/favicon.ico';
     var divCommonPageItemIcon = document.createElement("div");
     divCommonPageItemIcon.setAttribute("class", "common-page-item-icon");
     var imgCommonPageItemIcon = document.createElement("img");
-    imgCommonPageItemIcon.setAttribute("src", "../img/search.png");
+    imgCommonPageItemIcon.setAttribute("src", iconUrl);
     divCommonPageItemIcon.appendChild(imgCommonPageItemIcon);
 
     // label
     var divCommonPageItemLabel = document.createElement("div");
     divCommonPageItemLabel.setAttribute("class", "common-page-item-label");
     var spanCommonPageItemLabel = document.createElement("span");
-    spanCommonPageItemLabel.textContent = "测试";
+    spanCommonPageItemLabel.textContent = itemName;
     divCommonPageItemLabel.appendChild(spanCommonPageItemLabel);
 
     // modify
@@ -104,10 +110,37 @@ async function setBodyBackgroundImage(){
         console.log(response.data);
         if(response.data.images.length){
             let imageData = response.data.images[0].url;
-            console.log(imageData);
             let backGroundImageUrl = "url(http://cn.bing.com"+imageData+")";
             document.body.style.backgroundImage = backGroundImageUrl;
         }
+    }
+}
+
+function setFastItemList(){
+    let fastItemString = "";
+    fastItemString = localStorage.MyChromeHelper_FastItemList;
+    let fastItemListJson = [];
+    if(fastItemString == undefined){
+        console.log("未找到本地设置的快捷项");
+    }else{
+        fastItemListJson = JSON.parse(fastItemString);
+    }
+
+    var jsonLength= 0x0;
+    for(let fastItem in fastItemListJson)
+    {
+        jsonLength++;
+        AddShortCutItem(jsonLength, fastItem);
+
+        // 最多显示10个快捷项
+        if(jsonLength == 10){
+            break;
+        }
+    }
+
+    // 当快捷项小于10个时，添加一个用于添加快捷项的项
+    if(jsonLength.length < 10){
+
     }
 }
 
@@ -117,9 +150,8 @@ window.onload = function(){
     setBodyBackgroundImage();
 
     // 添加Item事件
-    for(var index = 0x0; index < 10; index++){
-        AddShortCutItem(index);
-    }
+    setFastItemList();
 
+    AddShortCutItem(1, {"name":"测试", "url":"https://www.baidu.com/"});
 }
 
