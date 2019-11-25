@@ -1,33 +1,38 @@
-function ShortCutItemClick(index){
-    alert("itemclick"+index);
+function ShortCutItemClick(param){
+    //alert("itemclick"+index);
 }
 
-function ShortCutItemMouseEnter(index){
-    var Item  = document.getElementById("ShortCut"+index);
+function ShortCutItemMouseEnter(param){
+    var Item  = param.target;
     if(Item){
         Item.setAttribute("class", "common-page-item-select");
     }
-    var Modify  = document.getElementById("ShortCutModify"+index);
+    var Modify  = Item.children[2];
     if(Modify){
         Modify.style.display="block";
     }
 }
 
-function ShortCutItemMouseLeave(index){
-    var Item  = document.getElementById("ShortCut"+index);
+function ShortCutItemMouseLeave(param){
+    var Item  = param.target;
     if(Item){
         Item.setAttribute("class", "common-page-item");
     }
-    var Modify  = document.getElementById("ShortCutModify"+index);
+    var Modify = Item.children[2];
     if(Modify){
         Modify.style.display="none";
     }
 }
 
-function ShortCutModifyClick(index){
-    alert("ModifyClick"+index);
+function ShortCutModifyClick(param){
+    //alert("ModifyClick"+index);
     // 阻止响应div的点击事件
     event.stopPropagation();
+
+    var Item  = document.getElementById("setfastitem");
+    if(Item){
+        Item.style.display="block";
+    }
 }
 
 
@@ -41,9 +46,12 @@ function AddShortCutItem(index, itemJson){
     divCommonPageItem.setAttribute("class", "common-page-item");
     divCommonPageItem.setAttribute("id", "ShortCut"+index);
     // 点击事件
-    divCommonPageItem.setAttribute("onclick", "ShortCutItemClick("+index+")");
-    divCommonPageItem.setAttribute("onmouseenter", "ShortCutItemMouseEnter("+index+")");
-    divCommonPageItem.setAttribute("onmouseleave", "ShortCutItemMouseLeave("+index+")");
+    divCommonPageItem.addEventListener("click", ShortCutItemClick);
+    divCommonPageItem.addEventListener("mouseenter", ShortCutItemMouseEnter);
+    divCommonPageItem.addEventListener("mouseleave", ShortCutItemMouseLeave);
+    // divCommonPageItem.setAttribute("onclick", "ShortCutItemClick("+index+")");
+    // divCommonPageItem.setAttribute("onmouseenter", "ShortCutItemMouseEnter("+index+")");
+    // divCommonPageItem.setAttribute("onmouseleave", "ShortCutItemMouseLeave("+index+")");
 
     // icon
     var domainReg = /(.+?:\/\/.+?)\//i;
@@ -68,7 +76,8 @@ function AddShortCutItem(index, itemJson){
     divCommonPageItemModify.setAttribute("aria-label", "修改快捷方式");
     divCommonPageItemModify.setAttribute("id", "ShortCutModify"+index);
     // 点击事件
-    divCommonPageItemModify.setAttribute("onclick", "ShortCutModifyClick("+index+")");
+    divCommonPageItemModify.addEventListener("click", ShortCutModifyClick);
+   // divCommonPageItemModify.setAttribute("onclick", "ShortCutModifyClick("+index+")");
 
     // 填充到Item的div中
     divCommonPageItem.appendChild(divCommonPageItemIcon);

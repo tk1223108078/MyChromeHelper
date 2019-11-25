@@ -41,6 +41,14 @@ body{
     background-size:cover;
 }
 
+#setfastitem{
+    display: none;
+    background: #000;
+    height: 200px;
+    widows: 300px;
+
+}
+
 /* logo部分 */
 #logo{
     /*background: rgb(205, 0, 0);*/
