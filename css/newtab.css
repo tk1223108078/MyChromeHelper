@@ -23,10 +23,11 @@ html {
     --mv-notice-time: 10s;
     --text-color: #000;
     --text-color-light: #fff;
-    --text-color-link: rgb(17, 85, 204);
+    --text-color-link: rgb(102, 140, 207);
     --radius-size: 22px;
     --icon-size: 24px;
-    height: 100%;
+    --dialog-height: 300px;
+    --dialog-width: 600px;
 }
 
 /* body样式 */
@@ -41,12 +42,32 @@ body{
     background-size:cover;
 }
 
-#setfastitem{
+#dialog-allscreen{
+    background: rgba(255, 255, 255, 0.5);
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 990;
     display: none;
-    background: #000;
-    height: 200px;
-    widows: 300px;
 
+}
+
+#dialog-allscreen-setitem{
+    opacity: 1;
+    background: #FFF;
+    height: var(--dialog-height);
+    width: var(--dialog-width);
+    top: calc(50% - var(--dialog-height)/2);
+    left: calc(50% - var(--dialog-width)/2);
+    position: fixed;
+}
+
+#homepage{
+    position: relative;
 }
 
 /* logo部分 */

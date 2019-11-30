@@ -29,7 +29,7 @@ function ShortCutModifyClick(param){
     // 阻止响应div的点击事件
     event.stopPropagation();
 
-    var Item  = document.getElementById("setfastitem");
+    var Item  = document.getElementById("dialog-allscreen");
     if(Item){
         Item.style.display="block";
     }
@@ -153,6 +153,18 @@ function setFastItemList(){
     }
 }
 
+function dialogSetitemOk(){
+    var Item  = document.getElementById("dialog-allscreen");
+    if(Item){
+        Item.style.display="none";
+    }
+}
+
+function initDialog(){
+    var okBtn = document.getElementById("dialogbtn-setitem-ok");
+    okBtn.addEventListener("click", dialogSetitemOk);
+}
+
 // 界面加载事件
 window.onload = function(){
     // 设置背景图片
@@ -162,5 +174,7 @@ window.onload = function(){
     setFastItemList();
 
     AddShortCutItem(1, {"name":"测试", "url":"https://www.baidu.com/"});
+
+    initDialog();
 }
 
