@@ -26,8 +26,8 @@ html {
     --text-color-link: rgb(102, 140, 207);
     --radius-size: 22px;
     --icon-size: 24px;
-    --dialog-height: 300px;
-    --dialog-width: 600px;
+    --dialog-height: 230px;
+    --dialog-width: 400px;
 }
 
 /* body样式 */
@@ -58,12 +58,141 @@ body{
 
 #dialog-allscreen-setitem{
     opacity: 1;
-    background: #FFF;
+    background: rgb(61, 59, 59);
     height: var(--dialog-height);
     width: var(--dialog-width);
     top: calc(50% - var(--dialog-height)/2);
     left: calc(50% - var(--dialog-width)/2);
     position: fixed;
+    border-radius: 10px;
+}
+
+#dialog-title{
+    color: whitesmoke;
+    font-size: 15px;
+    line-height: 24px;
+    margin: 10px;
+}
+
+#edit-form{
+    display: block;
+    margin: 10px;
+}
+
+.field-container{
+    margin-bottom: 16px;
+}
+
+.buttons-container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+}
+
+.input-container{
+    position: relative;
+}
+
+.field-title{
+    color: rgb(var(--GG400-rgb));
+}
+
+.field-input{
+    background-color: black;
+    caret-color: rgb(var(--GB300-rgb));
+    color: rgb(var(--GG200-rgb));
+    cursor: text;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 32px;
+    outline: none;
+    padding-inline-end: 8px;
+    padding-inline-start: 8px;
+    width: calc(100%);
+}
+
+.underline{
+    border-bottom: 2px solid rgb(var(--GB600-rgb));
+    bottom: 0;
+    box-sizing: border-box;
+    left: 0;
+    margin: auto;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    transition: opacity 120ms ease-out, width 0ms linear 180ms;
+    width: 0;
+}
+
+.err-msg{
+    display: none;
+    font-size: 10px;
+    font-weight: 400;
+    margin-top: 6px;
+}
+.dialog-button{
+    border: 1px solid rgb(255,255,255);
+    background-color: transparent;
+    color: whitesmoke;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.6;
+    min-height: 32px;
+    padding: 0 16px;
+    position: relative;
+    transition-duration: 200ms;
+    transition-property: background-color, color, box-shadow, border;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+
+#title{
+  
+}
+
+#title-field-name{
+    color: whitesmoke;
+}
+
+#title-field{
+    color: whitesmoke;
+}
+
+#url{
+
+}
+
+#url-field-name{
+    color: whitesmoke;
+}
+
+#url-field{
+    color: whitesmoke;
+}
+
+#invalid_url{
+    
+}
+
+#delete{
+    text-align: center;
+    align-items: flex-start;
+}
+
+#cancel{
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    margin-inline-end: 8px;
+}
+
+#submit{
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
 }
 
 #homepage{
