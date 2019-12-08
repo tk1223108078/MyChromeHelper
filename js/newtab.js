@@ -6,6 +6,7 @@
 var modifyDialog = null;
 var modifyDialogNameInput = null;
 var modifyDialogUrlInput = null;
+var searchInput = null;
 
 // 参数
 var bingDataUrl = "";
@@ -61,6 +62,50 @@ function elementsSetEventFunction(item, eventName, fucntion){
         console.error("[elementsSetEventFunction] 需要设置的元素无效");
     }
 }
+
+// 判断输入是否是URL
+function isUrl(str_url) {// 验证url
+    var strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+    + "?(([0-9a-zA-Z_!~*'().&=+$%-]+: )?[0-9a-zA-Z_!~*'().&=+$%-]+@)?" // ftp的user@
+    + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+    + "|" // 允许IP和DOMAIN（域名）
+    + "([0-9a-zA-Z_!~*'()-]+\.)*" // 域名- www.
+    + "([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z]\." // 二级域名
+    + "[a-zA-Z]{2,6})" // first level domain- .com or .museum
+    + "(:[0-9]{1,4})?" // 端口- :80
+    + "((/?)|" // a slash isn't required if there is no file name
+    + "(/[0-9a-zA-Z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+    var re = new RegExp(strRegex);
+    return re.test(str_url);
+}
+
+// 判断地址是否可用
+
+// Chrome插件相关辅助函数
+// 获取当前选项卡ID
+function getCurrentTabId(callback)
+{
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs)
+    {
+        if(callback) callback(tabs.length ? tabs[0].id: null);
+    });
+}
+
+// 当前标签打开某个链接
+function openUrlCurrentTab(url)
+{
+    getCurrentTabId(tabId => {
+        chrome.tabs.update(tabId, {url: url});
+    })
+}
+
+// 新标签打开某个链接
+function openUrlNewTab(url){
+    chrome.tabs.create({
+        'url': url
+    });
+}
+
 
 // 定制辅助函数
 // 快捷项添加
@@ -176,6 +221,25 @@ function onClickSubmit(){
     hideModifyDialog();
 }
 
+// 搜索对话框键盘点击事件
+function onSearchInputKeyDown(event){
+    // 处理enter事件
+    if(event.keyCode == 13)
+    {
+        var inputValue = searchInput.value;
+        // 处理URL
+        if(isUrl(inputValue)){
+            // 保证是网址
+            if(inputValue.indexOf("http://") != 0 && inputValue.indexOf("https://") != 0){
+                inputValue = "https://"+ inputValue;
+            } 
+            openUrlCurrentTab(inputValue);
+        }else{
+
+        }
+    }
+}
+
 /*
  * 初始化函数
  */
@@ -198,6 +262,13 @@ async function initBodyBackup(){
             document.body.style.backgroundImage = backGroundImageUrl;
         }
     }
+}
+
+// 初始化搜索
+function initSearch(){
+    // 添加搜索输入框的事件
+    searchInput = document.getElementById("search-box-input");
+    elementsSetEventFunction(searchInput, "keydown", onSearchInputKeyDown);
 }
 
 // 初始化快捷项列表
@@ -248,6 +319,8 @@ window.onload = function(){
     initData();
     // 背景
     initBodyBackup();
+    // 搜索模块
+    initSearch();
     // 快捷项列表
     initFastItemList();
     // 初始化对话框
