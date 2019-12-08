@@ -218,7 +218,7 @@ function onClickCancel(){
 
 // 对话框提交事件
 function onClickSubmit(){
-    hideModifyDialog();
+    hideModifyDialog()
 }
 
 // 搜索对话框键盘点击事件
@@ -232,11 +232,11 @@ function onSearchInputKeyDown(event){
             // 保证是网址
             if(inputValue.indexOf("http://") != 0 && inputValue.indexOf("https://") != 0){
                 inputValue = "https://"+ inputValue;
-            } 
-            openUrlCurrentTab(inputValue);
+            }
         }else{
-
+           inputValue = "https://www.baidu.com/s?wd="+inputValue;
         }
+        openUrlCurrentTab(encodeURI(inputValue));
     }
 }
 
@@ -269,6 +269,7 @@ function initSearch(){
     // 添加搜索输入框的事件
     searchInput = document.getElementById("search-box-input");
     elementsSetEventFunction(searchInput, "keydown", onSearchInputKeyDown);
+    searchInput.focus();
 }
 
 // 初始化快捷项列表
