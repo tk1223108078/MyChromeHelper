@@ -13,38 +13,14 @@ var searchJson = {};
 //     return null;
 // }
 
-// chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
-//     switch (request.type) {
-//         case "autobuy":
-//             var OpenUrl = request.url;
-//             var ConfigUrl = GetLocalStorageValueString(UrlKey);
-
-//             // 功能开关
-//             var EnableValue = false;
-//             if(OpenUrl == ConfigUrl){
-//                 if(GetLocalStorageValueString(EnableKey) == "open"){
-//                     EnableValue = true;
-//                 }
-//             }
-
-//             // 价格
-//             var PriceValue = 0.0;
-//             let PriceTemp = GetLocalStorageValueString(MaxPriceKey);
-//             if(PriceTemp){
-//                 PriceValue = parseFloat(PriceTemp);
-//             }
-//             // 数量
-//             var NumberValue = 0;
-//             let NumberTemp = GetLocalStorageValueString(MaxNumberKey);
-//             if(NumberTemp){
-//                 NumberValue = parseInt(NumberTemp);
-//             }
-//             sendResponse({Enable:EnableValue, Price:PriceValue, Number:NumberValue});
-            
-//             break;
-//         default: break;
-//     }
-// });
+chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
+    switch (request.type) {
+        case "alive":
+            sendResponse(searchJson);
+            break;
+        default: break;
+    }
+});
 
 // // 桌面通知
 // chrome.notifications.create(null, {

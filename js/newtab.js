@@ -12,9 +12,11 @@ var searchInput = null;
 var bingDataUrl = "";
 var bingUrl = "";
 var fastItemList = [];
+var searchJson = {baidu:0, google:0};
+var timeId = null;
 
 /*
- * 辅助函数 
+ * 辅助函数：通用
  */
 // 通用辅助函数
 // 获取网络请求信息
@@ -81,7 +83,9 @@ function isUrl(str_url) {// 验证url
 
 // 判断地址是否可用
 
-// Chrome插件相关辅助函数
+/*
+ * 辅助函数：Chrome插件相关辅助函数
+ */
 // 获取当前选项卡ID
 function getCurrentTabId(callback)
 {
@@ -106,8 +110,9 @@ function openUrlNewTab(url){
     });
 }
 
-
-// 定制辅助函数
+/*
+ * 辅助函数：页面辅助函数
+ */
 // 快捷项添加
 function AddShortCutItem(index, itemJson){
     var itemName = itemJson.name;
@@ -170,6 +175,24 @@ function hideModifyDialog(){
     elementsSetDisplay(modifyDialog, false);
 }
 
+// 搜索引擎测试
+async function searchTest(){
+    var baiduUrl = "https://www.baidu.com";
+    var response = await getResponse(baiduUrl);
+    if(response.ok == 0){
+        searchJson.baidu = 0;
+    }else{
+        searchJson.baidu = 1;
+    }
+    var googleUrl = "https://www.google.com";
+    var response = await getResponse(googleUrl);
+    if(response.ok == 0){
+        searchJson.google = 0;
+    }else{
+        searchJson.google = 1;
+    }
+}
+
 /*
  * 响应事件函数
  */
@@ -227,16 +250,29 @@ function onSearchInputKeyDown(event){
     if(event.keyCode == 13)
     {
         var inputValue = searchInput.value;
+        var newUrl;
+        var netErr = false;
         // 处理URL
         if(isUrl(inputValue)){
             // 保证是网址
             if(inputValue.indexOf("http://") != 0 && inputValue.indexOf("https://") != 0){
-                inputValue = "https://"+ inputValue;
+                newUrl = "https://"+ inputValue;
             }
         }else{
-           inputValue = "https://www.baidu.com/s?wd="+inputValue;
+            if(searchJson.google == 1){
+                newUrl = "https://www.google.com/search?q="+inputValue;
+            }else if(searchJson.baidu == 1){
+                newUrl = "https://www.baidu.com/s?wd="+inputValue;
+            }else{
+                netErr = true;
+            }
         }
-        openUrlCurrentTab(encodeURI(inputValue));
+        // 没有网络错误时，打开新的页面
+        if(netErr == false){
+            openUrlCurrentTab(encodeURI(newUrl));
+        }else{
+            
+        }
     }
 }
 
@@ -270,6 +306,14 @@ function initSearch(){
     searchInput = document.getElementById("search-box-input");
     elementsSetEventFunction(searchInput, "keydown", onSearchInputKeyDown);
     searchInput.focus();
+
+    // 启动时就进行可用性测试
+    searchTest();
+
+    // 每隔5秒进行测试
+    timeId = setInterval(async function() {
+        searchTest();
+    }, 1000*5);
 }
 
 // 初始化快捷项列表
