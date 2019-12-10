@@ -253,7 +253,7 @@ function onSearchInputKeyDown(event){
         var newUrl;
         var netErr = false;
         // 处理URL
-        if(isUrl(inputValue)){
+        if(isUrl(inputValue) && inputValue.indexOf(".") != -1){
             // 保证是网址
             if(inputValue.indexOf("http://") != 0 && inputValue.indexOf("https://") != 0){
                 newUrl = "https://"+ inputValue;
