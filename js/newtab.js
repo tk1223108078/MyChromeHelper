@@ -1,4 +1,9 @@
 /*
+ * Key值定义
+ */
+var define_fastitemlist_key = "www.taosijie.com.fastitemlist"
+
+/*
  * 全局变量
  */
 // 修改对话框
@@ -14,6 +19,7 @@ var bingUrl = "";
 var fastItemList = [];
 var searchJson = {baidu:0, google:0};
 var timeId = null;
+var curFastItem = -1;
 
 /*
  * 辅助函数：页面辅助函数
@@ -25,8 +31,10 @@ function AddShortCutItem(index, itemJson){
     // Item
     var divCommonPageItem = document.createElement("div");
     divCommonPageItem.setAttribute("class", "common-page-item");
-    divCommonPageItem.setAttribute("id", "ShortCut"+index);
-    elementsSetEventFunction(divCommonPageItem, "click", ShortCutItemClick);
+    divCommonPageItem.setAttribute("id", "fastitem"+index);
+    elementsSetEventFunction(divCommonPageItem, "click", function(){
+        ShortCutItemClick(index);
+    });
     elementsSetEventFunction(divCommonPageItem, "mouseenter", ShortCutItemMouseEnter);
     elementsSetEventFunction(divCommonPageItem, "mouseleave", ShortCutItemMouseLeave);
 
@@ -52,7 +60,9 @@ function AddShortCutItem(index, itemJson){
     divCommonPageItemModify.setAttribute("title", "修改快捷方式");
     divCommonPageItemModify.setAttribute("aria-label", "修改快捷方式");
     divCommonPageItemModify.setAttribute("id", "ShortCutModify"+index);
-    elementsSetEventFunction(divCommonPageItemModify, "click", ShortCutModifyClick);
+    elementsSetEventFunction(divCommonPageItemModify, "click", function(){
+        ShortCutModifyClick(index);
+    });
 
     // 填充到Item的div中
     divCommonPageItem.appendChild(divCommonPageItemIcon);
@@ -98,12 +108,39 @@ async function searchTest(){
     }
 }
 
+// 刷新快捷列表
+function UpdateFastItemList(){
+    // 清空原有项
+    for(var index = 0x0; ; index++)
+    {
+        var itemId = "fastitem"+index;
+        var item = document.getElementById(itemId);
+        if(item){
+            var parentItem = item.parentNode;//获取div的父对象
+            parentItem.removeChild(item);//通过div的父对象把它删除
+        }else{
+            break;
+        }
+    }
+    // 添加新数据
+    for(let index in fastItemList)
+    {
+        AddShortCutItem(index, fastItemList[index]);
+
+        // 最多显示10个快捷项
+        if(index == 9){
+            break;
+        }
+    }
+}
+
 /*
  * 响应事件函数
  */
 // 快捷项点击事件
-function ShortCutItemClick(param){
-    //alert("itemclick"+index);
+function ShortCutItemClick(index){
+    var itemInfo = fastItemList[index];
+    openUrlCurrentTab(encodeURI(itemInfo.url));
 }
 
 // 快捷项鼠标移入
@@ -127,25 +164,52 @@ function ShortCutItemMouseLeave(param){
 }
 
 // 快捷项修改按钮点击
-function ShortCutModifyClick(param){
+function ShortCutModifyClick(index){
     // 阻止响应div的点击事件
     event.stopPropagation();
-    // 显示修改对话框
-    showModifyDialog("百度", "https://www.baidu.com");
+    curFastItem = index;
+    var item = fastItemList[index];
+    showModifyDialog(item.name, item.url);
 }
 
 // 对话框删除事件
 function onClickDelete(){
+    // 新的快捷项
+    if(curFastItem == -1){
+
+    }
+    // 现有的快捷项
+    else{
+        // 删除数据
+        fastItemList.splice(curFastItem, 1);
+    }
+    // 刷新界面
+    UpdateFastItemList();
+    // 隐藏对话框
     hideModifyDialog();
 }
 
 // 对话框取消事件
 function onClickCancel(){
+    // 隐藏对话框
     hideModifyDialog();
 }
 
 // 对话框提交事件
 function onClickSubmit(){
+    var item = {"name":modifyDialogNameInput.value, "url":modifyDialogUrlInput.value};
+    // 新的快捷项
+    if(curFastItem == -1){
+        
+    }
+    // 现有的快捷项
+    else{
+        // 数据中删除该项
+        fastItemList[curFastItem] = item;
+    }
+    // 刷新界面
+    UpdateFastItemList();
+    // 隐藏对话框
     hideModifyDialog()
 }
 
@@ -195,6 +259,16 @@ function initData(){
     modifyDialog = document.getElementById("dialog-allscreen");
     bingDataUrl = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
     bingUrl = "http://cn.bing.com";
+
+    // 从本地存储中获取快捷项列表
+    var fastitemlistString = GetLocalStorageValueString(define_fastitemlist_key);
+    if(fastitemlistString != null){
+        fastItemList = JSON.parse(fastitemlistString);
+    }
+    
+    // 测试代码
+    var itemJson = {"name":"测试", "url":"https://www.baidu.com/"};
+    fastItemList.push(itemJson);
 }
 
 // 初始化背景图片
@@ -224,35 +298,12 @@ function initSearch(){
     // 每隔5秒进行测试
     timeId = setInterval(async function() {
         searchTest();
-    }, 1000*5);
+    }, 1000*10);
 }
 
 // 初始化快捷项列表
 function initFastItemList(){
-    let fastItemString = "";
-    fastItemString = localStorage.MyChromeHelper_FastItemList;
-    if(fastItemString == undefined){
-        console.log("未找到本地设置的快捷项");
-    }else{
-        fastItemList = JSON.parse(fastItemString);
-    }
-
-    var jsonLength= 0x0;
-    for(let fastItem in fastItemList)
-    {
-        jsonLength++;
-        AddShortCutItem(jsonLength, fastItem);
-
-        // 最多显示10个快捷项
-        if(jsonLength == 10){
-            break;
-        }
-    }
-
-    // 当快捷项小于10个时，添加一个用于添加快捷项的项
-    if(jsonLength.length < 10){
-
-    }
+    UpdateFastItemList();
 }
 
 // 初始化对话框
@@ -281,8 +332,5 @@ window.onload = function(){
     initFastItemList();
     // 初始化对话框
     initDialog();
-    
-    // 测试代码
-    AddShortCutItem(1, {"name":"测试", "url":"https://www.baidu.com/"});   
 }
 

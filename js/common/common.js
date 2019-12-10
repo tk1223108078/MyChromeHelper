@@ -59,3 +59,12 @@ function isUrl(str_url) {// 验证url
     var re = new RegExp(strRegex);
     return re.test(str_url);
 }
+
+// 获取本地存储内容
+function GetLocalStorageValueString(key){
+    if(window.localStorage){
+        var value = window.localStorage.getItem(key);
+        return value;
+    }
+    return null;
+}

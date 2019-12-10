@@ -1,26 +1,11 @@
-var EnableKey = "www.taosijie.com.chrometool.Enable";
-var UrlKey = "www.taosijie.com.chrometool.Url";
-var MaxPriceKey = "www.taosijie.com.chrometool.MaxPrice";
-var MaxNumberKey = "www.taosijie.com.chrometool.MaxNumber";
-var searchJson = {};
-
-// // 获取本地存储值
-// function GetLocalStorageValueString(key){
-//     if(window.localStorage){
-//         var value = window.localStorage.getItem(key);
-//         return value;
+// chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
+//     switch (request.type) {
+//         case "alive":
+//             sendResponse(searchJson);
+//             break;
+//         default: break;
 //     }
-//     return null;
-// }
-
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
-    switch (request.type) {
-        case "alive":
-            sendResponse(searchJson);
-            break;
-        default: break;
-    }
-});
+// });
 
 // // 桌面通知
 // chrome.notifications.create(null, {
@@ -45,57 +30,3 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
 // chrome.contextMenus.removeAll();
 // // 更新某一个菜单项
 // chrome.contextMenus.update(menuItemId, updateProperties);
-
-// 网络可用性测试
-var getResponse = async function(url) {
-    let ok = 0;
-    let data = "";
-    try{
-        let response = await fetch(url, {
-            headers:{
-                'Set-Cookie': 'HttpOnly;Secure;SameSite=Strict'
-              }
-        });
-        if(response.ok && response.status == 200){
-            // 标记通讯成功，并且设置返回值
-            ok = 1;
-            data = await response.json();
-        }else{
-            data = "网络请求失败，ok="+response.ok+", status="+response.status;
-        }
-    }catch(error){
-        data = "发生异常, error="+error;
-    }
-    // 返回值
-    return {"ok":ok, "data":data};
-}
-
-async function searchTest(){
-    var bingUrl  = "https://www.bing.com";
-    var response = await getResponse(bingUrl);
-    if(response.ok == 0){
-        searchJson.bing = 0;
-    }else{
-        searchJson.bing = 1;
-    }
-    baiduUrl = "https://www.baidu.com";
-    response = await getResponse(baiduUrl);
-    if(response.ok == 0){
-        searchJson.baidu = 0;
-    }else{
-        searchJson.baidu = 1;
-    }
-    var googleUrl = "https://www.google.com";
-    response = await getResponse(googleUrl);
-    if(response.ok == 0){
-        searchJson.google = 0;
-    }else{
-        searchJson.google = 1;
-    }
-}
-// 启动时就进行可用性测试
-searchTest();
-// 每隔5秒进行测试
-var timeId = setInterval(async function() {
-    searchTest();
-}, 1000*5);
