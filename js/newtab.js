@@ -150,7 +150,7 @@ function onClickSubmit(){
 }
 
 // 搜索对话框键盘点击事件
-function onSearchInputKeyDown(event){
+async function onSearchInputKeyDown(event){
     // 处理enter事件
     if(event.keyCode == 13)
     {
@@ -162,6 +162,12 @@ function onSearchInputKeyDown(event){
             // 保证是网址
             if(inputValue.indexOf("http://") != 0 && inputValue.indexOf("https://") != 0){
                 newUrl = "https://"+ inputValue;
+                // 测试https连通性
+                var response = await getResponse(newUrl);
+                if(response.ok == 0){
+                    // 测试http连通性
+                    newUrl = "http://"+ inputValue;
+                }
             }
         }else{
             if(searchJson.google == 1){
