@@ -267,7 +267,11 @@ function initData(){
     }
     
     // 测试代码
-    var itemJson = {"name":"测试", "url":"https://www.baidu.com/"};
+    var itemJson = {"name":"百度", "url":"https://www.baidu.com/"};
+    fastItemList.push(itemJson);
+    itemJson = {"name":"知乎", "url":"https://www.zhihu.com/"};
+    fastItemList.push(itemJson);
+    itemJson = {"name":"翻译", "url":"https://translate.google.cn/"};
     fastItemList.push(itemJson);
 }
 
