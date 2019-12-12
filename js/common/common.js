@@ -57,7 +57,7 @@ function isUrl(str_url) {// 验证url
     + "((/?)|" // a slash isn't required if there is no file name
     + "(/[0-9a-zA-Z_!~*'().;?:@&=+$,%#-]+)+/?)$";
     var re = new RegExp(strRegex);
-    return re.test(str_url);
+    return re.test(str_url) && (str_url.indexOf(".") != -1);
 }
 
 // 获取本地存储内容
@@ -67,4 +67,11 @@ function GetLocalStorageValueString(key){
         return value;
     }
     return null;
+}
+
+// 获取本地存储内容
+function SetLocalStorageValueString(key, value){
+    if(window.localStorage){
+        window.localStorage.setItem(key, value);
+    }
 }

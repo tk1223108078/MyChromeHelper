@@ -11,6 +11,7 @@ var define_fastitemlist_key = "www.taosijie.com.fastitemlist"
 var modifyDialog = null;
 var modifyDialogNameInput = null;
 var modifyDialogUrlInput = null;
+var invalidUrlLabel = null;
 var searchInput = null;
 
 // 参数
@@ -40,7 +41,16 @@ function AddShortCutItem(index, itemJson){
 
     // icon
     var domainReg = /(.+?:\/\/.+?)\//i;
-    var iconUrl = url.match(domainReg)[1] + '/favicon.ico';
+    if(index == -1){
+        var iconUrl = "../img/itemadd.png";
+    }else{
+        var domain = url.match(domainReg)
+        if(isUrl(url) && domain != null && domain.length >= 2){
+            var iconUrl = domain[1] + '/favicon.ico';
+        }else{
+            var iconUrl = "../img/item.png";
+        }
+    }
     var divCommonPageItemIcon = document.createElement("div");
     divCommonPageItemIcon.setAttribute("class", "common-page-item-icon");
     var imgCommonPageItemIcon = document.createElement("img");
@@ -111,7 +121,7 @@ async function searchTest(){
 // 刷新快捷列表
 function UpdateFastItemList(){
     // 清空原有项
-    for(var index = 0x0; ; index++)
+    for(var index = 0; ; index++)
     {
         var itemId = "fastitem"+index;
         var item = document.getElementById(itemId);
@@ -122,6 +132,14 @@ function UpdateFastItemList(){
             break;
         }
     }
+    // 删除可能存在的添加项
+    var item = document.getElementById("fastitem-1");
+    if(item){
+        var parentItem = item.parentNode;//获取div的父对象
+        parentItem.removeChild(item);//通过div的父对象把它删除
+    }
+
+    var needAddItem = true;
     // 添加新数据
     for(let index in fastItemList)
     {
@@ -129,20 +147,23 @@ function UpdateFastItemList(){
 
         // 最多显示10个快捷项
         if(index == 9){
+            needAddItem = false;    // 标记不需要添加项
             break;
         }
     }
+
+    if(needAddItem){
+        AddShortCutItem(-1, {"name":"添加", "url":""});
+    }
+}
+
+function SaveFastItemDataToLocalStorage(){
+    SetLocalStorageValueString(define_fastitemlist_key, JSON.stringify(fastItemList));
 }
 
 /*
  * 响应事件函数
  */
-// 快捷项点击事件
-function ShortCutItemClick(index){
-    var itemInfo = fastItemList[index];
-    openUrlCurrentTab(encodeURI(itemInfo.url));
-}
-
 // 快捷项鼠标移入
 function ShortCutItemMouseEnter(param){
     var Item  = param.target;
@@ -163,13 +184,26 @@ function ShortCutItemMouseLeave(param){
     elementsSetDisplay(modifyBtn, false);
 }
 
+// 快捷项点击事件
+function ShortCutItemClick(index){
+    curFastItem = index;
+    if(index != -1){
+        var itemInfo = fastItemList[index];
+        openUrlCurrentTab(encodeURI(itemInfo.url));
+    }else{
+        showModifyDialog("", "https://");
+    }
+}
+
 // 快捷项修改按钮点击
 function ShortCutModifyClick(index){
     // 阻止响应div的点击事件
     event.stopPropagation();
     curFastItem = index;
-    var item = fastItemList[index];
-    showModifyDialog(item.name, item.url);
+    if(index != -1){
+        var item = fastItemList[index];
+        showModifyDialog(item.name, item.url);
+    }
 }
 
 // 对话框删除事件
@@ -185,6 +219,7 @@ function onClickDelete(){
     }
     // 刷新界面
     UpdateFastItemList();
+    SaveFastItemDataToLocalStorage();
     // 隐藏对话框
     hideModifyDialog();
 }
@@ -197,10 +232,11 @@ function onClickCancel(){
 
 // 对话框提交事件
 function onClickSubmit(){
+    // 防止输入的不是url
     var item = {"name":modifyDialogNameInput.value, "url":modifyDialogUrlInput.value};
     // 新的快捷项
     if(curFastItem == -1){
-        
+        fastItemList[fastItemList.length] = item;
     }
     // 现有的快捷项
     else{
@@ -209,6 +245,7 @@ function onClickSubmit(){
     }
     // 刷新界面
     UpdateFastItemList();
+    SaveFastItemDataToLocalStorage();
     // 隐藏对话框
     hideModifyDialog()
 }
@@ -222,7 +259,7 @@ async function onSearchInputKeyDown(event){
         var newUrl;
         var netErr = false;
         // 处理URL
-        if(isUrl(inputValue) && inputValue.indexOf(".") != -1){
+        if(isUrl(inputValue)){
             // 保证是网址
             if(inputValue.indexOf("http://") != 0 && inputValue.indexOf("https://") != 0){
                 newUrl = "https://"+ inputValue;
@@ -257,22 +294,24 @@ async function onSearchInputKeyDown(event){
 // 数据初始化
 function initData(){
     modifyDialog = document.getElementById("dialog-allscreen");
+    invalidUrlLabel = document.getElementById("invalid-url-label");
     bingDataUrl = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
     bingUrl = "http://cn.bing.com";
 
     // 从本地存储中获取快捷项列表
     var fastitemlistString = GetLocalStorageValueString(define_fastitemlist_key);
     if(fastitemlistString != null){
+        console.log(fastitemlistString);
         fastItemList = JSON.parse(fastitemlistString);
     }
     
-    // 测试代码
-    var itemJson = {"name":"百度", "url":"https://www.baidu.com/"};
-    fastItemList.push(itemJson);
-    itemJson = {"name":"知乎", "url":"https://www.zhihu.com/"};
-    fastItemList.push(itemJson);
-    itemJson = {"name":"翻译", "url":"https://translate.google.cn/"};
-    fastItemList.push(itemJson);
+    // // 测试代码
+    // var itemJson = {"name":"百度", "url":"https://www.baidu.com/"};
+    // fastItemList.push(itemJson);
+    // itemJson = {"name":"知乎", "url":"https://www.zhihu.com/"};
+    // fastItemList.push(itemJson);
+    // itemJson = {"name":"翻译", "url":"https://translate.google.cn/"};
+    // fastItemList.push(itemJson);
 }
 
 // 初始化背景图片
