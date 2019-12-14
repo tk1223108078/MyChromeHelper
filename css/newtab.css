@@ -28,6 +28,10 @@ html {
     --icon-size: 24px;
     --dialog-height: 230px;
     --dialog-width: 400px;
+    --search-height: 44px;
+    --search-width: 560px;
+    --search-item-height:21px;
+    --search-item-padding:3px;
 }
 
 /* body样式 */
@@ -230,12 +234,13 @@ body{
     border-radius: var(--radius-size);
     cursor: text;
     font-size: 18px;
-    height: 44px;
+    height: var(--search-height);
     line-height: 36px;
     margin: 0 auto;
-    max-width: 560px;
+    max-width: var(--search-width);
     opacity: 1;
     position: relative;
+    border: 1px solid gray;
 }
 
 #search-box-icon{
@@ -279,14 +284,14 @@ body{
 
 #search-suggest{
     background: #fff;
-    max-width: 680px;
-    height: var(--dialog-height);
-    width: var(--dialog-width);
-    top: calc(50% - var(--dialog-height)/2);
-    left: calc(50% - var(--dialog-width)/2);
+    max-width: 560px;
+    /*max-height: calc(calc(var(--search-item-height)+var(--search-item-padding))*8);*/
+    width: var(--search-width);
+    top: calc(var(--logo-height) + var(--logo-margin-bottom)+var(--search-height));
+    left: calc(50% - calc(var(--search-width)/2));
     position: absolute;
     z-index: 990;
-    
+    border: 1px solid gray;
 }
 
 .suggest {
@@ -300,9 +305,9 @@ body{
 }
 
 .suggest ul li {
-    padding: 3px;
-    font-size: 17px;
-    line-height: 25px;
+    font-size: 16px;
+    height: var(--search-item-height);
+    padding: var(--search-item-padding);
     cursor: pointer;
 }
 
