@@ -1,0 +1,1 @@
+var messgae_flag_key = "www.taosijie.com/mychromehelper"
