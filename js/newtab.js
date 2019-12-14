@@ -13,6 +13,8 @@ var modifyDialogNameInput = null;
 var modifyDialogUrlInput = null;
 var invalidUrlLabel = null;
 var searchInput = null;
+var searchSuggest = null;
+var searchSuggestResult = null;
 
 // 参数
 var bingDataUrl = "";
@@ -294,6 +296,32 @@ async function onSearchInputKeyDown(event){
     }
 }
 
+// 搜索对话框键盘松开事件
+function onSearchInputKeyUp(event){
+    console.log(this.value);
+    // 输入不为空时给出建议
+    if(this.value.length != 0){
+        // 设置建议值
+         // 动态创建li标签
+         var liObj = document.createElement("li");
+         liObj.value = "121312";
+         searchSuggestResult.appendChild(liObj);
+        // 显示建议框
+        elementsSetDisplay(searchSuggest, true);
+    }
+}
+
+// 输入框失去焦点
+function onSearchInputBlur(event){
+    // 输入框失去焦点直接隐藏建议框
+    //elementsSetDisplay(searchSuggest, false);
+}
+
+// 输入框变化事件
+function onSearchInputChange(event){
+   
+}
+
 /*
  * 初始化函数
  */
@@ -331,8 +359,13 @@ function initSearch(){
     // 添加搜索输入框的事件
     searchInput = document.getElementById("search-box-input");
     elementsSetEventFunction(searchInput, "keydown", onSearchInputKeyDown);
+    elementsSetEventFunction(searchInput, "keyup", onSearchInputKeyUp);
+    elementsSetEventFunction(searchInput, "blur", onSearchInputBlur);
+    elementsSetEventFunction(searchInput, "change", onSearchInputChange);
     searchInput.focus();
-
+    // 搜索建议框
+    searchSuggest = document.getElementById("search-suggest");
+    searchSuggestResult = document.getElementById("search-suggest-result");
     // 启动时就进行可用性测试
     searchTest();
 
