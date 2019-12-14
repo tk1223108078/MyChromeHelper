@@ -232,8 +232,14 @@ function onClickCancel(){
 
 // 对话框提交事件
 function onClickSubmit(){
-    // 防止输入的不是url
-    var item = {"name":modifyDialogNameInput.value, "url":modifyDialogUrlInput.value};
+    // 格式化字符串
+    var url = modifyDialogUrlInput.value;
+    // 确保以/结尾
+    if(!url.endsWith("/")){
+        url += "/"
+    }
+
+    var item = {"name":modifyDialogNameInput.value, "url":url};
     // 新的快捷项
     if(curFastItem == -1){
         fastItemList[fastItemList.length] = item;
@@ -304,14 +310,6 @@ function initData(){
         console.log(fastitemlistString);
         fastItemList = JSON.parse(fastitemlistString);
     }
-    
-    // // 测试代码
-    // var itemJson = {"name":"百度", "url":"https://www.baidu.com/"};
-    // fastItemList.push(itemJson);
-    // itemJson = {"name":"知乎", "url":"https://www.zhihu.com/"};
-    // fastItemList.push(itemJson);
-    // itemJson = {"name":"翻译", "url":"https://translate.google.cn/"};
-    // fastItemList.push(itemJson);
 }
 
 // 初始化背景图片
