@@ -21,3 +21,13 @@ function openUrlNewTab(url){
         'url': url
     });
 }
+
+// 注入JS文件至页面中
+function InjectJsFile(jspath){
+    var s = document.createElement('script');
+    s.src = chrome.extension.getURL(jspath);
+    s.onload = function() {
+        this.parentNode.removeChild(this);
+    };
+    (document.head || document.documentElement).appendChild(s);
+}

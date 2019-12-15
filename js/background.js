@@ -30,3 +30,56 @@
 // chrome.contextMenus.removeAll();
 // // 更新某一个菜单项
 // chrome.contextMenus.update(menuItemId, updateProperties);
+
+// background页面是插件运行后就一直在后台运行的
+
+// 获取本地存储中的历史页面列表
+var historyPageListDataMap = new Map();
+var historyPageListTimeMap = new Map();
+var historyPageListString = GetLocalStorageValueString(localstorage_historypagelist_key);
+if(historyPageListString != null){
+    historyPageListDataMap = JsonStrToMap(historyPageListString);
+    for (let[k,v] of historyPageListDataMap) {
+        historyPageListTimeMap.set(v.time, v);
+      }
+}
+
+// 定时函数
+function onTime(){
+    // 遍历现有的map清空最老的浏览记录
+    // 当前map超过最大大小时，清理掉最老的十分之一的记录
+    if(historyPageListDataMap.size > historypagelist_maxsize)
+    {
+        var historyPageListTimeArray = Array.from(historyPageListTimeMap);
+        historyPageListTimeArray.sort(function(a,b){return a[0] - b[0]});
+        var clearCurNumber = 0x0;
+        for (var value of historyPageListTimeArray) {
+            if(clearCurNumber < historypagelist_clearsize){
+                historyPageListDataMap.delete(value.url);
+                historyPageListTimeMap.delete(value.time);
+                clearCurNumber++;
+            }else{
+                break;
+            }
+        }
+    }
+
+    // 存储浏览历史
+    var historyPageListString = MapToJsonStr(historyPageListDataMap);
+    SetLocalStorageValueString(historyPageListString);
+}
+
+// 接受content.js中发送来的消息
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+    if(request.id == messgae_flag_key){
+        var pageInfo = request.data;
+        historyPageListDataMap.set(pageInfo.url, pageInfo);
+        historyPageListTimeMap.set(pageInfo.time, pageInfo);
+        sendResponse('我已收到你的消息：' +JSON.stringify(request));
+    }
+});
+
+// 启动定时任务
+var timeId = setInterval(onTime, 1000*3);
+
+

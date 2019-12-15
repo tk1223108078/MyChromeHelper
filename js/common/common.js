@@ -70,3 +70,31 @@ function SetLocalStorageValueString(key, value){
         window.localStorage.setItem(key, value);
     }
 }
+
+// map转换为对象
+function MapToObj(map){
+    let obj= Object.create(null);
+    for (let[k,v] of map) {
+      obj[k] = v;
+    }
+    return obj;
+}
+
+// map转换为json字符串
+function MapToJsonStr(map) {
+    return JSON.stringify(this.MapToObj(map));
+}
+
+// 对象转换为map
+function ObjToMap(obj){
+    let map = new Map();
+    for (let k of Object.keys(obj)) {
+        map.set(k,obj[k]);
+    }
+    return map;
+}
+
+// json字符串转换为map
+function JsonStrToMap(jsonStr){
+    return this.ObjToMap(JSON.parse(jsonStr));
+}

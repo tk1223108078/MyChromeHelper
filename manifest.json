@@ -31,13 +31,15 @@
     "128": "img/icon.png" 
   }, 
   "web_accessible_resources" : [
-    "js/inject.js",
-    "js/common/define.js"
+    "js/common/common.js", 
+    "js/common/chrome.js",
+    "js/common/define.js",
+    "js/inject.js"
   ], 
   "content_scripts": [ 
     {
         "matches": ["http://*/*","https://*/*"],   
-		    "js": ["js/common/define.js", "js/content.js"]
+		    "js": ["js/common/common.js", "js/common/chrome.js", "js/common/define.js", "js/content.js"]
     }
   ] 
 }

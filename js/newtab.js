@@ -1,9 +1,4 @@
 /*
- * Key值定义
- */
-var define_fastitemlist_key = "www.taosijie.com.fastitemlist"
-
-/*
  * 全局变量
  */
 // 修改对话框
@@ -160,7 +155,7 @@ function UpdateFastItemList(){
 }
 
 function SaveFastItemDataToLocalStorage(){
-    SetLocalStorageValueString(define_fastitemlist_key, JSON.stringify(fastItemList));
+    SetLocalStorageValueString(localstorage_fastitemlist_key, JSON.stringify(fastItemList));
 }
 
 /*
@@ -333,7 +328,7 @@ function initData(){
     bingUrl = "http://cn.bing.com";
 
     // 从本地存储中获取快捷项列表
-    var fastitemlistString = GetLocalStorageValueString(define_fastitemlist_key);
+    var fastitemlistString = GetLocalStorageValueString(localstorage_fastitemlist_key);
     if(fastitemlistString != null){
         console.log(fastitemlistString);
         fastItemList = JSON.parse(fastitemlistString);
@@ -372,7 +367,7 @@ function initSearch(){
     // 每隔5秒进行测试
     timeId = setInterval(async function() {
         searchTest();
-    }, 1000*10);
+    }, 1000*5);
 }
 
 // 初始化快捷项列表

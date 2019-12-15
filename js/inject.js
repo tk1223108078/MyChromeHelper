@@ -7,4 +7,10 @@ window.addEventListener("message", function(event) {
     }
 }, false);
 
-window.postMessage({id:messgae_flag_key, data:"inject发送消息到content测试"}, '*');
+window.onload = function(){
+    // 获取当前页面标题和url
+    var title = document.title;
+    var url = window.location.href; /* 获取完整URL */  
+    var host = window.location.host; /* 获取主机地址和端口号 */   
+    window.postMessage({id:messgae_flag_key, data:{title:title, url:url}}, '*');
+}

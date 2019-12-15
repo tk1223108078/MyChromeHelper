@@ -1,15 +1,31 @@
-// 注入函数至正常页面中
-function InjectJsFile(jspath){
-    var s = document.createElement('script');
-    s.src = chrome.extension.getURL(jspath);
-    s.onload = function() {
-        this.parentNode.removeChild(this);
-    };
-    (document.head || document.documentElement).appendChild(s);
-}
+// // 获取本地存储中的历史页面列表
+// var historyPageListMap = new Map();
+// var historyPageListString = GetLocalStorageValueString(localstorage_historypagelist_key);
+// if(historyPageListString != null){
+//     historyPageListMap = JsonStrToMap(historyPageListString);
+// }
 
+// 注入到当前页面中
+// 为什么要注入了，因为content中是获取不到原页面中的元素的，只能通过注入到原页面中的js才能获取
+InjectJsFile("js/common/common.js");
+InjectJsFile("js/common/chrome.js");
 InjectJsFile("js/common/define.js");
 InjectJsFile("js/inject.js");
+
+// 接受inject.js中的消息
+window.addEventListener("message", function(event) {
+    var data = event.data;
+    if(data && data.id == messgae_flag_key)
+    {
+        var pageInfo = data.data;
+        var key = pageInfo.url;
+        var time = new Date().getTime();
+        var value = {title:pageInfo.title, time:time};
+        historyPageListDataMap.set(key, value);
+        var historyPageListMapString = MapToJsonStr(historyPageListDataMap);
+        SetLocalStorageValueString(localstorage_historypagelist_key, historyPageListMapString);
+    }
+}, false);
 
 // 接收chrome插件内部的消息
 chrome.runtime.onMessage.addListener(
@@ -21,10 +37,18 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-window.addEventListener("message", function(event) {
-    var data = event.data;
-    if(data && data.id == messgae_flag_key)
-    {
-        this.console.log(data.data);
-    }
-}, false);
+window.onload = function(){
+    // 获取当前页面标题和url
+    var title = document.title;
+    var url = window.location.href; /* 获取完整URL */  
+    var time = new Date().getTime();
+    var data = {title:title, url:url, time:time};
+    // 向backgrond.js发送消息
+    chrome.runtime.sendMessage(
+        {id: messgae_flag_key, data:data},
+        function(response) {
+            console.log('收到来自后台的回复：' + response);
+        }
+    );
+    // window.postMessage({id:messgae_flag_key, data:{title:title, url:url}}, '*');
+}
