@@ -70,12 +70,20 @@ function onTime(){
 }
 
 // 接受content.js中发送来的消息
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    if(request.id == messgae_flag_key){
-        var pageInfo = request.data;
-        historyPageListDataMap.set(pageInfo.url, pageInfo);
-        historyPageListTimeMap.set(pageInfo.time, pageInfo);
-        sendResponse('我已收到你的消息：' +JSON.stringify(request));
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
+    if(request.id == messgae_id_key)
+    {
+        // 历史页面统计
+        if(request.action == messgae_action_pagerecord){
+            var pageInfo = request.data;
+            historyPageListDataMap.set(pageInfo.url, pageInfo);
+            historyPageListTimeMap.set(pageInfo.time, pageInfo);
+            sendResponse({id:1});
+        }
+        // 搜索建议
+        else if(request.action == messgae_action_searchsuggest){
+
+        }
     }
 });
 
