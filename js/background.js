@@ -69,6 +69,34 @@ function onTime(){
     SetLocalStorageValueString(historyPageListString);
 }
 
+// 从历史列表中获取推荐列表
+function getSuggestList(value){
+    var rv = [];
+    var searchValueLowerCase = value.toLowerCase();
+    var historyPageListTimeArray = Array.from(historyPageListTimeMap);
+    // 倒序
+    historyPageListTimeArray.sort(function(a,b){return b[0] - a[0]});
+    var selectNumber = 0x0;
+    for (var item of historyPageListTimeArray)
+    {
+        var url = item[1].url;
+        var title = item[1].title;
+        // 看url和title有没有匹配的
+        if(url.toLowerCase().indexOf(searchValueLowerCase) != -1 || title.toLowerCase().indexOf(searchValueLowerCase) != -1)
+        {
+            if(selectNumber <= suggestlist_maxsize)
+            {
+                rv.push({url:url, title:title});
+                selectNumber++;
+            }
+            else{
+                break;
+            }
+        }
+    }
+    return rv;
+}
+
 // 接受content.js中发送来的消息
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
     if(request.id == messgae_id_key)
@@ -82,7 +110,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
         }
         // 搜索建议
         else if(request.action == messgae_action_searchsuggest){
-
+            var searchValue = request.data;
+            sendResponse(getSuggestList(searchValue));
         }
     }
 });

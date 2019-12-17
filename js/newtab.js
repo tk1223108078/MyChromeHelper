@@ -158,6 +158,41 @@ function SaveFastItemDataToLocalStorage(){
     SetLocalStorageValueString(localstorage_fastitemlist_key, JSON.stringify(fastItemList));
 }
 
+function UpdateSearchSuggestList(suggestList){
+    if(!searchSuggestResult){
+        return;    
+    }
+
+    // 先删除所有的子节点
+    var child = searchSuggestResult.lastElementChild;  
+    while(child) { 
+        searchSuggestResult.removeChild(child); 
+        child = e.lastElementChild;
+    }
+
+    // 遍历插入新的元素
+    for (var suggestItem of suggestList)
+    {
+        var liObj = document.createElement("li");
+        var aObj = document.createElement("a");
+        aObj.href = suggestItem.url;
+        aObj.innerText = suggestItem.title + "--" + suggestItem.url;
+        liObj.appendChild(aObj);
+        searchSuggestResult.appendChild(liObj);
+    }
+}
+
+function getSuggestListByBackgroud(searchValue){
+     // 向backgrond.js发送消息
+     chrome.runtime.sendMessage(
+        {id: messgae_id_key, action:messgae_action_searchsuggest, data:searchValue},
+        function(response) {
+            console.log("接收的返回消息"+JSON.stringify(response));
+            UpdateSearchSuggestList(response);
+        }
+    );
+}
+
 /*
  * 响应事件函数
  */
@@ -297,10 +332,7 @@ function onSearchInputKeyUp(event){
     // 输入不为空时给出建议
     if(this.value.length != 0){
         // 设置建议值
-         // 动态创建li标签
-         var liObj = document.createElement("li");
-         liObj.value = "121312";
-         searchSuggestResult.appendChild(liObj);
+        getSuggestListByBackgroud(this.value);
         // 显示建议框
         elementsSetDisplay(searchSuggest, true);
     }
