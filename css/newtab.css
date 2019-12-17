@@ -315,6 +315,11 @@ body{
     background-color: #e5e5e5
 }
 
+.suggest ul li a{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
 
 #common-page{
     z-index: -1;

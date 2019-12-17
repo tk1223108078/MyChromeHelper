@@ -158,7 +158,7 @@ function SaveFastItemDataToLocalStorage(){
     SetLocalStorageValueString(localstorage_fastitemlist_key, JSON.stringify(fastItemList));
 }
 
-function UpdateSearchSuggestList(suggestList){
+function ClearSuggestList(){
     if(!searchSuggestResult){
         return;    
     }
@@ -167,8 +167,17 @@ function UpdateSearchSuggestList(suggestList){
     var child = searchSuggestResult.lastElementChild;  
     while(child) { 
         searchSuggestResult.removeChild(child); 
-        child = e.lastElementChild;
+        child = searchSuggestResult.lastElementChild;
     }
+}
+
+function UpdateSearchSuggestList(suggestList){
+    if(!searchSuggestResult){
+        return;    
+    }
+
+    // 清空建议列表
+    ClearSuggestList();
 
     // 遍历插入新的元素
     for (var suggestItem of suggestList)
@@ -176,7 +185,7 @@ function UpdateSearchSuggestList(suggestList){
         var liObj = document.createElement("li");
         var aObj = document.createElement("a");
         aObj.href = suggestItem.url;
-        aObj.innerText = suggestItem.title + "--" + suggestItem.url;
+        aObj.innerText = suggestItem.title + " - " + suggestItem.url;
         liObj.appendChild(aObj);
         searchSuggestResult.appendChild(liObj);
     }
@@ -335,13 +344,20 @@ function onSearchInputKeyUp(event){
         getSuggestListByBackgroud(this.value);
         // 显示建议框
         elementsSetDisplay(searchSuggest, true);
+    }else{
+        // 清空建议项
+        ClearSuggestList();
+        // 显示建议框
+        elementsSetDisplay(searchSuggest, false);
     }
 }
 
 // 输入框失去焦点
 function onSearchInputBlur(event){
+    // 清空建议项
+    ClearSuggestList();
     // 输入框失去焦点直接隐藏建议框
-    //elementsSetDisplay(searchSuggest, false);
+    elementsSetDisplay(searchSuggest, false);
 }
 
 // 输入框变化事件
