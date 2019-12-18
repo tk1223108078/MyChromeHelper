@@ -104,9 +104,14 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
         // 历史页面统计
         if(request.action == messgae_action_pagerecord){
             var pageInfo = request.data;
-            historyPageListDataMap.set(pageInfo.url, pageInfo);
+            // 删除timemap中的旧值
+            if(historyPageListDataMap.has(pageInfo.url)){
+                var item = historyPageListDataMap.get(pageInfo.url);
+                historyPageListTimeMap.delete(item.time);
+            }
+            // 更新下俩个map中的值
             historyPageListTimeMap.set(pageInfo.time, pageInfo);
-            sendResponse({id:1});
+            historyPageListDataMap.set(pageInfo.url, pageInfo);
         }
         // 搜索建议
         else if(request.action == messgae_action_searchsuggest){
