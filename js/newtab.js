@@ -18,6 +18,7 @@ var fastItemList = [];
 var searchJson = {baidu:0, google:0};
 var timeId = null;
 var curFastItem = -1;
+var isInSuggestResult = false;
 
 /*
  * 辅助函数：页面辅助函数
@@ -31,10 +32,10 @@ function AddShortCutItem(index, itemJson){
     divCommonPageItem.setAttribute("class", "common-page-item");
     divCommonPageItem.setAttribute("id", "fastitem"+index);
     elementsSetEventFunction(divCommonPageItem, "click", function(){
-        ShortCutItemClick(index);
+        onShortCutItemClick(index);
     });
-    elementsSetEventFunction(divCommonPageItem, "mouseenter", ShortCutItemMouseEnter);
-    elementsSetEventFunction(divCommonPageItem, "mouseleave", ShortCutItemMouseLeave);
+    elementsSetEventFunction(divCommonPageItem, "mouseenter", onShortCutItemMouseEnter);
+    elementsSetEventFunction(divCommonPageItem, "mouseleave", onShortCutItemMouseLeave);
 
     // icon
     var domainReg = /(.+?:\/\/.+?)\//i;
@@ -68,7 +69,7 @@ function AddShortCutItem(index, itemJson){
     divCommonPageItemModify.setAttribute("aria-label", "修改快捷方式");
     divCommonPageItemModify.setAttribute("id", "ShortCutModify"+index);
     elementsSetEventFunction(divCommonPageItemModify, "click", function(){
-        ShortCutModifyClick(index);
+        onShortCutModifyClick(index);
     });
 
     // 填充到Item的div中
@@ -180,14 +181,17 @@ function UpdateSearchSuggestList(suggestList){
     ClearSuggestList();
 
     // 遍历插入新的元素
+    var index = 0x1;
     for (var suggestItem of suggestList)
     {
         var liObj = document.createElement("li");
+        liObj.setAttribute("tabindex", index);
         var aObj = document.createElement("a");
         aObj.href = suggestItem.url;
         aObj.innerText = suggestItem.title + " - " + suggestItem.url;
         liObj.appendChild(aObj);
         searchSuggestResult.appendChild(liObj);
+        index++;
     }
 }
 
@@ -206,7 +210,7 @@ function getSuggestListByBackgroud(searchValue){
  * 响应事件函数
  */
 // 快捷项鼠标移入
-function ShortCutItemMouseEnter(param){
+function onShortCutItemMouseEnter(param){
     var Item  = param.target;
     if(Item){
         Item.setAttribute("class", "common-page-item-select");
@@ -216,7 +220,7 @@ function ShortCutItemMouseEnter(param){
 }
 
 // 快捷项鼠标移出
-function ShortCutItemMouseLeave(param){
+function onShortCutItemMouseLeave(param){
     var Item  = param.target;
     if(Item){
         Item.setAttribute("class", "common-page-item");
@@ -226,7 +230,7 @@ function ShortCutItemMouseLeave(param){
 }
 
 // 快捷项点击事件
-function ShortCutItemClick(index){
+function onShortCutItemClick(index){
     curFastItem = index;
     if(index != -1){
         var itemInfo = fastItemList[index];
@@ -237,7 +241,7 @@ function ShortCutItemClick(index){
 }
 
 // 快捷项修改按钮点击
-function ShortCutModifyClick(index){
+function onShortCutModifyClick(index){
     // 阻止响应div的点击事件
     event.stopPropagation();
     curFastItem = index;
@@ -333,6 +337,16 @@ async function onSearchInputKeyDown(event){
             
         }
     }
+    // 向下键
+    else if(event.keyCode == 40){
+        if(!searchSuggestResult){
+            return;
+        }    
+        var childs = searchSuggestResult.childNodes;
+        if(childs && childs.length != 0x0){
+            childs[0].focus();
+        }
+    }
 }
 
 // 搜索对话框键盘松开事件
@@ -354,15 +368,27 @@ function onSearchInputKeyUp(event){
 
 // 输入框失去焦点
 function onSearchInputBlur(event){
-    // 清空建议项
-    ClearSuggestList();
-    // 输入框失去焦点直接隐藏建议框
-    elementsSetDisplay(searchSuggest, false);
+    if(isInSuggestResult){
+        // 清空建议项
+        ClearSuggestList();
+        // 输入框失去焦点直接隐藏建议框
+        elementsSetDisplay(searchSuggest, false);
+    }
 }
 
 // 输入框变化事件
 function onSearchInputChange(event){
    
+}
+
+// 建议项鼠标移入
+function onSuggestResultMouseEnter(param){
+    isInSuggestResult = true;
+}
+
+// 建议项鼠标移出
+function onSuggestResultMouseLeave(param){
+    isInSuggestResult = false;
 }
 
 /*
@@ -409,6 +435,9 @@ function initSearch(){
     // 搜索建议框
     searchSuggest = document.getElementById("search-suggest");
     searchSuggestResult = document.getElementById("search-suggest-result");
+    elementsSetEventFunction(searchSuggestResult, "mouseenter", onSuggestResultMouseEnter);
+    elementsSetEventFunction(searchSuggestResult, "mouseleave", onSuggestResultMouseLeave);
+
     // 启动时就进行可用性测试
     searchTest();
 
