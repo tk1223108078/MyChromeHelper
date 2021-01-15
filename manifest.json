@@ -12,7 +12,12 @@
       "cookies",
       "contextMenus",
       "http://*/*",
-      "https://*/*"
+      "https://*/*",
+      "<all_urls>",
+      "clipboardWrite",
+      "clipboardRead",
+      "notifications",
+      "declarativeContent"
   ],
   "browser_action": {
     "default_icon": "img/icon.png",
