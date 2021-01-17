@@ -95,10 +95,16 @@ async function showCookie() {
  * 自动脚本
  */
 
-// 根据Domain获取Cookie
-async function getCookieByDomain(domain) {
+// 根据URL获取Cookie
+async function getCookieByDomain(url) {
     let ok = 0;
     let data = new Map();
+
+    // 解析传入的URL为Domain
+    var arr = url.split("/");
+    var domain = arr[0] + '//' + arr[2];
+
+    // 获取指定URL的Cookie
     let promise = new Promise((resolve, reject) => {
         chrome.cookies.getAll({ url: domain }, cookies => {
             for (var i = 0; i < cookies.length; i++) {
@@ -133,8 +139,20 @@ async function onAutoRun() {
     }
 
     // 获取指定界面的
-    var getCookieResult = await getCookieByDomain("https://c.m.suning.com");
-    console.log("1");
+    var CookieResult = await getCookieByDomain(url);
+    // 获取Cookie失败
+    if (CookieResult.ok == 0x0) {
+        return;
+    }
+
+    // 判断是否有authId
+    if (CookieResult.data.has('authId') == false) {
+        return;
+    }
+
+    // 打开了苏宁的网页并且登录了，符合查询的条件了
+    console.log("打开了苏宁的网站并且已经登录了，可以查询农场的收获情况了");
+
 }
 
 // 启动定时任务
