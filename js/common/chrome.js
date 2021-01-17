@@ -31,7 +31,7 @@ function InjectJsFile(jspath) {
 
 var isUrlOpen = async function(url) {
     try {
-        var result;
+        var result = false;
         await chrome.tabs.query({}, tabs => {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i].url.search(url) != -1) {
