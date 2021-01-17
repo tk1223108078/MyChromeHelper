@@ -49,10 +49,9 @@ function notify(msg) {
     if (window.Notification) { new Notification(chrome.app.getDetails().name, { icon: chrome.app.getDetails().icons['48'], body: msg }); }
 }
 
-// 
 async function getIdFromCookie() {
     let promise1 = new Promise((resolve, reject) => {
-        chrome.tabs.getSelected(null, function (tab) {
+        chrome.tabs.getSelected(null, function(tab) {
             var url = tab.url;
             var arr = url.split("/");
             var result = arr[0] + '//' + arr[2]
@@ -67,7 +66,7 @@ async function getIdFromCookie() {
     let promise = new Promise((resolve, reject) => {
         chrome.cookies.getAll({
             url: domain
-        }, async function (cookies) {
+        }, async function(cookies) {
             for (var i = 0; i < cookies.length; i++) {
                 if (cookies[i].name.length > 0 && cookies[i].value.length > 0) {
                     stringCookie = stringCookie + cookies[i].name + "=" + cookies[i].value + "; ";
@@ -92,32 +91,85 @@ async function showCookie() {
     notify("Cookies 已经成功复制到剪切板。");
 }
 
+/**
+ * 自动脚本
+ */
+
+// 根据Domain获取Cookie
+async function getCookieByDomain(domain) {
+    let ok = 0;
+    let data = new Map();
+    let promise = new Promise((resolve, reject) => {
+        chrome.cookies.getAll({ url: domain }, cookies => {
+            for (var i = 0; i < cookies.length; i++) {
+                if (cookies[i].name.length > 0 && cookies[i].value.length > 0) {
+                    data.set(cookies[i].name, cookies[i].value);
+                }
+            }
+            resolve(data);
+        });
+    })
+
+    try {
+        let result = await promise;
+        if (result.size > 0) {
+            ok = 1;
+            data = result;
+        }
+    } catch (error) {
+        data = "发生异常, error=" + error;
+    }
+    // 返回值
+    return { "ok": ok, "data": data };
+}
+
+// 自动执行函数
+async function onAutoRun() {
+    let url = 'https://c.m.suning.com/newFarm2020.html';
+    // 确保打开了苏宁农庄
+    var isOpen = await isUrlOpen(url);
+    if (isOpen == false) {
+        return;
+    }
+
+    // 获取指定界面的
+    var getCookieResult = await getCookieByDomain("https://c.m.suning.com");
+    console.log("1");
+}
+
+// 启动定时任务
+var timeAutoRun = setInterval(onAutoRun, 1000 * 3);
+
+
+/**
+ * 统计相关
+ */
+
 // 获取本地存储中的历史页面列表
 var historyPageListDataMap = new Map();
 var historyPageListTimeMap = new Map();
 var historyPageListString = GetLocalStorageValueString(localstorage_historypagelist_key);
-if(historyPageListString != null){
+if (historyPageListString != null) {
     historyPageListDataMap = JsonStrToMap(historyPageListString);
-    for (let[k,v] of historyPageListDataMap) {
+    for (let [k, v] of historyPageListDataMap) {
         historyPageListTimeMap.set(v.time, v);
-      }
+    }
 }
 
 // 定时函数
-function onTime(){
+function onTime() {
     // 遍历现有的map清空最老的浏览记录
     // 当前map超过最大大小时，清理掉最老的十分之一的记录
-    if(historyPageListDataMap.size > historypagelist_maxsize)
-    {
+    if (historyPageListDataMap.size > historypagelist_maxsize) {
         var historyPageListTimeArray = Array.from(historyPageListTimeMap);
-        historyPageListTimeArray.sort(function(a,b){return a[0] - b[0]});
+        historyPageListTimeArray.sort(function(a, b) { return a[0] - b[0] });
         var clearCurNumber = 0x0;
         for (var value of historyPageListTimeArray) {
-            if(clearCurNumber < historypagelist_clearsize){
+            if (clearCurNumber < historypagelist_clearsize) {
                 historyPageListDataMap.delete(value.url);
                 historyPageListTimeMap.delete(value.time);
                 clearCurNumber++;
-            }else{
+            } else {
                 break;
             }
         }
@@ -129,26 +181,22 @@ function onTime(){
 }
 
 // 从历史列表中获取推荐列表
-function getSuggestList(value){
+function getSuggestList(value) {
     var rv = [];
     var searchValueLowerCase = value.toLowerCase();
     var historyPageListTimeArray = Array.from(historyPageListTimeMap);
     // 倒序
-    historyPageListTimeArray.sort(function(a,b){return b[0] - a[0]});
+    historyPageListTimeArray.sort(function(a, b) { return b[0] - a[0] });
     var selectNumber = 0x0;
-    for (var item of historyPageListTimeArray)
-    {
+    for (var item of historyPageListTimeArray) {
         var url = item[1].url;
         var title = item[1].title;
         // 看url和title有没有匹配的
-        if(url.toLowerCase().indexOf(searchValueLowerCase) != -1 || title.toLowerCase().indexOf(searchValueLowerCase) != -1)
-        {
-            if(selectNumber <= suggestlist_maxsize)
-            {
-                rv.push({url:url, title:title});
+        if (url.toLowerCase().indexOf(searchValueLowerCase) != -1 || title.toLowerCase().indexOf(searchValueLowerCase) != -1) {
+            if (selectNumber <= suggestlist_maxsize) {
+                rv.push({ url: url, title: title });
                 selectNumber++;
-            }
-            else{
+            } else {
                 break;
             }
         }
@@ -157,14 +205,13 @@ function getSuggestList(value){
 }
 
 // 接受content.js中发送来的消息
-chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
-    if(request.id == messgae_id_key)
-    {
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.id == messgae_id_key) {
         // 历史页面统计
-        if(request.action == messgae_action_pagerecord){
+        if (request.action == messgae_action_pagerecord) {
             var pageInfo = request.data;
             // 删除timemap中的旧值
-            if(historyPageListDataMap.has(pageInfo.url)){
+            if (historyPageListDataMap.has(pageInfo.url)) {
                 var item = historyPageListDataMap.get(pageInfo.url);
                 historyPageListTimeMap.delete(item.time);
             }
@@ -173,7 +220,7 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
             historyPageListDataMap.set(pageInfo.url, pageInfo);
         }
         // 搜索建议
-        else if(request.action == messgae_action_searchsuggest){
+        else if (request.action == messgae_action_searchsuggest) {
             var searchValue = request.data;
             sendResponse(getSuggestList(searchValue));
         }
@@ -181,6 +228,4 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse){
 });
 
 // 启动定时任务
-var timeId = setInterval(onTime, 1000*3);
-
-
+var timeId = setInterval(onTime, 1000 * 3);
