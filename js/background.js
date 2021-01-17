@@ -129,14 +129,18 @@ async function getCookieByDomain(url) {
     return { "ok": ok, "data": data };
 }
 
+// 记录下上次请求失败的Cookie中的AuthId, 
+var RequestFailedForNoLoginAuthIdString = "";
+
 // 自动执行函数
 async function onAutoRun() {
     let url = 'https://c.m.suning.com/newFarm2020.html';
-    // 确保打开了苏宁农庄
-    var isOpen = await isUrlOpen(url);
-    if (isOpen == false) {
-        return;
-    }
+    // 貌似都不需要打开
+    // // 确保打开了苏宁农庄
+    // var isOpen = await isUrlOpen(url);
+    // if (isOpen == false) {
+    //     return;
+    // }
 
     // 获取指定界面的
     var CookieResult = await getCookieByDomain(url);
@@ -150,8 +154,10 @@ async function onAutoRun() {
         return;
     }
 
+    if ()
+
     // 打开了苏宁的网页并且登录了，符合查询的条件了
-    console.log("打开了苏宁的网站并且已经登录了，可以查询农场的收获情况了");
+        console.log("打开了苏宁的网站并且已经登录了，可以查询农场的收获情况了");
 
 }
 
