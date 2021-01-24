@@ -1,0 +1,221 @@
+如何获取当前农场物品的成熟情况
+URL：https://act.suning.com/act-wap-web/snfarm/gateway/getFarmHome.do?activityCode=snfarm
+Cookie：_snmc=1; _snvd=1610791186664PRybc3d3ajV; SN_CITY=100_512_1000176_9176_05_11397_2_0; cityCode=512; districtId=11397; streetCode=5120599; cityId=9176; totalProdQty=0; _snzwt=THrEFG1770aa2efeeWZHe0007; hm_guid=ef6aab7e-4d78-4ebc-a371-c22ebc915324; UM_distinctid=1770aa2f2176a-0e726451caadcf-171d4b58-1aeaa0-1770aa2f218cef; _df_ud=f963798e-b3b3-4b7a-a3f2-6498894b5005; _device_session_id=p_ba9fc539-f9e5-4225-acb5-1b75a7a2aea6; _snsr=google.com%7Creferral%7C%7C%7C; iar_sncd=0; tradeMA=63; authId=siwe6Q2BAhn4hiaJBidTvbjrOY0uTqvc8W; custno=6176789055; logonStatus=2; nick=131******23; nick2=131******23; sncnstr=j2Qkw8i%2BlbL6I6rByaN5nw%3D%3D; secureToken=06C9E5D56C2D0A54F381A150716863B7; mtisAbTest=B; mtisCartQty=0; provinceCode=100; gps=%7B%22latitude%22%3A31.282054400000003%2C%22longitude%22%3A120.53620790000001%7D; districtCode=04; townCode=5120402; addrNum=; address=%7B%22provName%22%3A%22%E6%B1%9F%E8%8B%8F%E7%9C%81%22%2C%22cityName%22%3A%22%E8%8B%8F%E5%B7%9E%E5%B8%82%22%2C%22districtName%22%3A%22%E8%99%8E%E4%B8%98%E5%8C%BA%22%2C%22address%22%3A%22%E7%8F%A0%E6%B1%9F%E8%B7%AF121%E5%8F%B7%22%2C%22locLat%22%3A%2231.281677%22%2C%22locLng%22%3A%22120.533192%22%2C%22store%22%3A%7B%22deliveryQos%22%3A%222%22%2C%22locLat%22%3A31.295577%2C%22locLng%22%3A120.582026%2C%22merchantCode%22%3A%22R5321%22%2C%22storeCode%22%3A%2274P8%22%2C%22storeName%22%3A%22%E5%AE%B6%E4%B9%90%E7%A6%8F%E8%8B%8F%E5%B7%9E%E4%BD%93%E8%82%B2%E4%B8%AD%E5%BF%83%E5%BA%97%22%2C%22cityCode%22%3A%22512%22%2C%22districtCode%22%3A%2251213%22%7D%2C%22isN%22%3A%221%22%7D; route=db6a652cb6b8214c720fd7c61f2a0f93; #/; _snma=1%7C161079118508324088%7C1610791185083%7C1610791972379%7C1610793021961%7C25%7C3; _snmp=161079302191620314; _snmb=161079129380328181%7C1610793021998%7C1610793021970%7C22; token=fcd731f9-cd79-4fb4-896c-8a9b6ad43b1e; _snck=161079303483256089
+User-Agent：Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1
+
+authId=si03NV0xW2MOtUeYBiG1aGynLNDs1zjtlz;
+
+Response：
+    {
+    "api": "snfarm.getFarmHome",
+    "code": "1",
+    "data": {
+        "msg": "成功",
+        "result": {
+            "changeFarmNameFlag": true,
+            "currentStealList": [],
+            "currentTime": "2021-01-16 18:30:40",
+            "doubleSteal": false,
+            "fieldRemindFlag": false,
+            "firstEntryFlag": false,
+            "initUserFieldStatus": true,
+            "protectStatus": false,
+            "stageReward": [{
+                "reward": "10",
+                "stage": 1
+            }, {
+                "reward": "10",
+                "stage": 4
+            }],
+            "timeStatus": "nightTime",
+            "userFieldList": [{
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:06",
+                "cropRipeTime": "2021-01-16 21:49:06",
+                "custNo": "6176789055",
+                "fieldNo": 1,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026752,
+                "unlockCoins": "0",
+                "uuid": "458312212039110656"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:07",
+                "cropRipeTime": "2021-01-16 21:49:07",
+                "custNo": "6176789055",
+                "fieldNo": 2,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026753,
+                "unlockCoins": "0",
+                "uuid": "458312214830100480"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:07",
+                "cropRipeTime": "2021-01-16 21:49:07",
+                "custNo": "6176789055",
+                "fieldNo": 3,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026754,
+                "unlockCoins": "0",
+                "uuid": "458312215710662656"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:06",
+                "cropRipeTime": "2021-01-16 21:49:06",
+                "custNo": "6176789055",
+                "fieldNo": 4,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026755,
+                "unlockCoins": "100",
+                "uuid": "458312211161038848"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:07",
+                "cropRipeTime": "2021-01-16 21:49:07",
+                "custNo": "6176789055",
+                "fieldNo": 5,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026756,
+                "unlockCoins": "200",
+                "uuid": "458312218280546304"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:08",
+                "cropRipeTime": "2021-01-16 21:49:08",
+                "custNo": "6176789055",
+                "fieldNo": 6,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026757,
+                "unlockCoins": "300",
+                "uuid": "458312219051175936"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:08",
+                "cropRipeTime": "2021-01-16 21:49:08",
+                "custNo": "6176789055",
+                "fieldNo": 7,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026758,
+                "unlockCoins": "400",
+                "uuid": "458312222664187904"
+            }, {
+                "activityCode": "snfarm",
+                "cropId": "0015",
+                "cropInformStatus": 0,
+                "cropName": "帝王蟹",
+                "cropPlantTime": "2021-01-16 16:49:09",
+                "cropRipeTime": "2021-01-16 21:49:09",
+                "custNo": "6176789055",
+                "fieldNo": 8,
+                "fieldStatus": 1,
+                "harvestCoins": 0,
+                "id": 431474683950026759,
+                "unlockCoins": "500",
+                "uuid": "458312223422357504"
+            }],
+            "userInfo": {
+                "activityCode": "snfarm",
+                "cityCode": "512",
+                "createTime": "2020-11-03 15:26:21.0",
+                "custNo": "6176789055",
+                "farmName": "1*3",
+                "id": 26401862,
+                "photoUrl": "https://image1.suning.cn/uimg/cmf/cust_headpic/0000000000_01_120x120.jpg",
+                "rewardNum": "1116",
+                "totalRewardNum": "120159",
+                "updateTime": "2021-01-16 18:30:39"
+            }
+        },
+        "resultCode": "0000"
+    },
+    "msg": "",
+    "v": "1.0"
+}
+
+
+// 种植新的植物
+https://act.suning.com/act-wap-web/snfarm/gateway/plantCrops.do?activityCode=snfarm&cropId=0001&fieldNo=8
+
+{
+    "api": "snfarm.plantCrops",
+    "code": "1",
+    "data": {
+        "msg": "成功",
+        "result": {
+            "activityCode": "snfarm",
+            "cropId": "0001",
+            "cropInformStatus": 0,
+            "cropName": "萝卜",
+            "cropPlantTime": "2021-01-24 09:26:12",
+            "cropRipeTime": "2021-01-24 10:26:12",
+            "custNo": "6176789055",
+            "fieldNo": 8,
+            "fieldStatus": 1,
+            "harvestCoins": 0,
+            "id": 431474683950026759,
+            "uuid": "461099854956068864"
+        },
+        "resultCode": "0000"
+    },
+    "msg": "",
+    "v": "1.0"
+}
+
+// 收获成熟植物
+https://act.suning.com/act-wap-web/snfarm/gateway/harvestCrops.do?activityCode=snfarm&cropId=0001&fieldNo=8&detect=mmds_AA58ectNr~MBV_4G3NHh2h2A22Fgg2mcciihhhcgih5cgh1q3KdIs68ehRNAjjecR8Focm8FRel8j5c28lVVRelq2gmiVgDVc5Fg5VFhKkM1EdXsh2hihm2Vhih782m52iFFmVVh5cgh2AVFhm2VhA2cAcmqiggh~Bs11111~Bs1jt3111114b11hmiAhh2imcViF_._ef21cd26-bba4-4c0c-b0a4-c5074f579b58_._&_device_session_id=THElDc17731e634bcljx3398e___w7DDp8KLwqJnw5cZbMOxK2_CrcOICMOCw7FewqzCsMOk&referenceURL=https%3A%2F%2Fc.m.suning.com%2FnewFarm2020.html%3Fsafp%3Df73ee1cf.wapindex7.113456729859.6%26safpn%3D10001%23%2F&channel=WAP
+
+activityCode: snfarm
+cropId: 0001
+fieldNo: 8
+detect: mmds_AA58ectNr~MBV_4G3NHh2h2A22Fgg2mcciihhhcgih5cgh1q3KdIs68ehRNAjjecR8Focm8FRel8j5c28lVVRelq2gmiVgDVc5Fg5VFhKkM1EdXsh2hihm2Vhih782m52iFFmVVh5cgh2AVFhm2VhA2cAcmqiggh~Bs11111~Bs1jt3111114b11hmiAhh2imcViF_._ef21cd26-bba4-4c0c-b0a4-c5074f579b58_._
+_device_session_id: THElDc17731e634bcljx3398e___w7DDp8KLwqJnw5cZbMOxK2_CrcOICMOCw7FewqzCsMOk
+referenceURL: https://c.m.suning.com/newFarm2020.html?safp=f73ee1cf.wapindex7.113456729859.6&safpn=10001#/
+channel: WAP
+
+{
+    "api": "snfarm.harvestCrops",
+    "code": "1",
+    "data": {
+        "msg": "成功",
+        "result": {
+            "activityCode": "snfarm",
+            "custNo": "6176789055",
+            "fieldNo": 8,
+            "fieldStatus": 0,
+            "harvestCoins": 10,
+            "id": 431474683950026759,
+            "virturalScore": "23423"
+        },
+        "resultCode": "0000"
+    },
+    "msg": "",
+    "v": "1.0"
+}
