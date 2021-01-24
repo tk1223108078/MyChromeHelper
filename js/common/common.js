@@ -22,6 +22,30 @@ var getResponse = async function(url) {
     return { "ok": ok, "data": data };
 }
 
+var getResponseWithCookie = async function(url, cookies) {
+    let ok = 0;
+    let data = "";
+    try {
+        let response = await fetch(url, {
+            credentials: 'include',
+            headers: {
+                'Set-Cookie': 'HttpOnly;Secure;SameSite=Strict'
+            }
+        });
+        if (response.ok && response.status == 200) {
+            // 标记通讯成功，并且设置返回值
+            ok = 1;
+            data = await response.json();
+        } else {
+            data = "网络请求失败，ok=" + response.ok + ", status=" + response.status;
+        }
+    } catch (error) {
+        data = "发生异常, error=" + error;
+    }
+    // 返回值
+    return { "ok": ok, "data": data };
+}
+
 // 设置元素显示还是隐藏
 function elementsSetDisplay(item, show) {
     if (item) {
@@ -97,4 +121,9 @@ function ObjToMap(obj) {
 // json字符串转换为map
 function JsonStrToMap(jsonStr) {
     return this.ObjToMap(JSON.parse(jsonStr));
+}
+
+// 休息函数
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
