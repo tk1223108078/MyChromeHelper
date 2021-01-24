@@ -30,17 +30,42 @@ function InjectJsFile(jspath) {
 }
 
 var isUrlOpen = async function(url) {
-    try {
-        var result = false;
-        await chrome.tabs.query({}, tabs => {
+    var result = false;
+    let promise = new Promise((resolve, reject) => {
+        chrome.tabs.query({}, tabs => {
             for (var i = 0; i < tabs.length; i++) {
                 if (tabs[i].url.search(url) != -1) {
                     result = true;
+                    resolve(result);
                 }
             }
         });
-        return result;
-    } catch {
-        return false;
-    }
+    })
+
+    try {
+        let promiseResult = await promise;
+        result = promiseResult;
+    } catch (error) {}
+    return result;
+}
+
+var refreshTabByUrl = async function(url) {
+    var result = false;
+    let promise = new Promise((resolve, reject) => {
+        chrome.tabs.query({}, tabs => {
+            for (var i = 0; i < tabs.length; i++) {
+                if (tabs[i].url.search(url) != -1) {
+                    chrome.tabs.reload(tabs[i].id);
+                    result = true;
+                    resolve(result);
+                }
+            }
+        });
+    })
+
+    try {
+        let promiseResult = await promise;
+        result = promiseResult;
+    } catch (error) {}
+    return result;
 }
